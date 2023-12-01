@@ -18,7 +18,7 @@
 <body class="antialiased"  style="background-color: pink">
     <div class="container px-4 mx-auto">
         <header class="bg-gray-100 rounded py-4 px-4 mt-5 flex flex-row justify-between items-center">
-        <a style="width:17%;" class="pr-1 font-semibold" href="/rd/public/home"><img src="/rd/public/Gmu_trans_Horizontal.png" alt="GMU-Logo"></a>
+        <a style="width:17%;" class="pr-1 font-semibold" href="/rd/public/terceros"><img src="/rd/public/Gmu_trans_Horizontal.png" alt="GMU-Logo"></a>
 
             <b class="text-gi">Gestión de RD</b>
 

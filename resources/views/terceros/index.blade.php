@@ -59,4 +59,11 @@
             </table>
         </div>
     </div>
+    <div class="mt-4 flex justify-center">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {{ $terceros->links() }}
+            </ul>
+          </nav>
+    </div>
 </x-layout>
