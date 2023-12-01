@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TercerosController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,9 +18,8 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Route::get('/home', function () {
-    return view('home');
-});
+Route::get('/terceros', [TercerosController::class, 'index'])
+    ->name('terceros');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
