@@ -114,7 +114,7 @@
                         <tr class="border border-slate-400">
                             <td class="border border-slate-300 px-6 py-4">
                                 <div class="text-sm text-gray-900">
-                                    {{$tercero->Nombre}}
+                                   <a href="{{ route('terceros.show', ['id' => $tercero->Id]) }}">{{$tercero->Nombre}}</a>
                                 </div>
                             </td>
                             <td class="border border-slate-300 px-6 py-4">
