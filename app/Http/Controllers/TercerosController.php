@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Tercero;
+use DateTime;
 use Illuminate\Support\Facades\DB;
 
 class TercerosController extends Controller
@@ -71,6 +72,42 @@ class TercerosController extends Controller
         return $validados;
     }
 
+    public function create()
+    {
+        $tercero = new Tercero();
+
+        return view('terceros.create', [
+            'tercero' => $tercero,
+        ]);
+    }
+
+    public function store()
+    {
+        $validados = $this->validar();
+
+        $tercero = new Tercero();
+
+        $tercero->Nombre = $validados['Nombre'];
+        $tercero->DNI = $validados['DNI'];
+        $tercero->Expediente = $validados['Expediente'];
+        $tercero->Importe = $validados['Importe'];
+        $tercero->Fecha = new DateTime($validados['Fecha']);
+        $tercero->Texto = $validados['Texto'];
+        $tercero->RD = $validados['RD'];
+        $tercero->Estado = $validados['Estado'];
+        $tercero->Año = $validados['Año'];
+        $tercero->Total = $validados['Total'];
+        $tercero->FechaPagado = new DateTime($validados['FechaPagado']);
+        $tercero->FechaEjecutiva = new DateTime($validados['FechaEjecutiva']);
+        $tercero->FechaNotificacion = new DateTime($validados['FechaNotificacion']);
+        $tercero->Motivo = $validados['Motivo'];
+        $tercero->FechaAnulacion = new DateTime($validados['FechaAnulacion']);
+
+        $tercero->save();
+
+        return redirect('/terceros')->with('success', 'Registro creado con éxito.');
+    }
+
     public function edit($id)
     {
         $tercero = Tercero::findOrFail($id);
@@ -106,6 +143,17 @@ class TercerosController extends Controller
         ]);
 
         return redirect('terceros/'. $tercero->Id)->with('success', 'Registro editado con éxito.');
+    }
+
+    public function destroy($id)
+    {
+        $tercero = Tercero::findOrFail($id);
+
+        $tercero->delete();
+
+        DB::select('DELETE FROM terceros WHERE id = ?', [$tercero->Id]);
+
+        return redirect('/terceros')->with('success', 'Registro borrado correctamente');
     }
 
 }
