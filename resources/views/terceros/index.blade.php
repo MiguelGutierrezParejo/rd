@@ -146,7 +146,7 @@
     <div class="mt-4 flex justify-center">
         <nav aria-label="Page navigation example">
             <ul class="pagination">
-                {{ $terceros->links() }}
+                {{ $terceros->appends(request()->query())->links() }}
             </ul>
           </nav>
     </div>
