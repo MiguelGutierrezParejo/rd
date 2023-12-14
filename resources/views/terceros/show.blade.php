@@ -122,7 +122,7 @@
     <br>
 
     <div class="flex justify-end space-x-2 pt-3">
-        <a href="{{url()->previous()}}" style="background-color: #0053D0"
+        <a href="/rd/public/terceros" style="background-color: #0053D0"
             class="transition-colors rounded-[8px] px-[15px] py-[4px] text-white focus:ring-2">Volver</a>
     </div>
 </x-layout>
