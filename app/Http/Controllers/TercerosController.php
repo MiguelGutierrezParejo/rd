@@ -10,40 +10,39 @@ use Illuminate\Support\Facades\DB;
 class TercerosController extends Controller
 {
     public function index()
-{
-    $ordenes = ['Nombre', 'DNI', 'Expediente', 'Importe', 'RD'];
-    $orden = request()->query('orden') ?: 'Nombre';
-    abort_unless(in_array($orden, $ordenes), 404);
+    {
+        $ordenes = ['Nombre', 'DNI', 'Expediente', 'Importe', 'RD'];
+        $orden = request()->query('orden') ?: 'Nombre';
+        abort_unless(in_array($orden, $ordenes), 404);
 
-    $searchParams = [
-        'Nombre' => request('Nombre'),
-        'DNI' => request('DNI'),
-        'Expediente' => request('Expediente'),
-        'Importe' => request('Importe'),
-        'RD' => request('RD'),
-    ];
+        $searchParams = [
+            'Nombre' => request('Nombre'),
+            'DNI' => request('DNI'),
+            'Expediente' => request('Expediente'),
+            'Importe' => request('Importe'),
+            'RD' => request('RD'),
+        ];
 
-    $terceros = DB::table('terceros')
-        ->select('terceros.*')
-        ->where('Nombre', 'LIKE', '%' . request('Nombre') . '%')
-        ->where('DNI', 'LIKE', '%' . request('DNI') . '%')
-        ->where('Expediente', 'LIKE', '%' . request('Expediente') . '%')
-        ->where('Importe', 'LIKE', '%' . request('Importe') . '%')
-        ->where('RD', 'LIKE', '%' . request('RD') . '%');
+        $terceros = DB::table('terceros')
+            ->select('terceros.*')
+            ->where('Nombre', 'LIKE', '%' . request('Nombre') . '%')
+            ->where('DNI', 'LIKE', '%' . request('DNI') . '%')
+            ->where('Expediente', 'LIKE', '%' . request('Expediente') . '%')
+            ->where('Importe', 'LIKE', '%' . request('Importe') . '%')
+            ->where('RD', 'LIKE', '%' . request('RD') . '%');
 
-    if (request('dir') == 'desc') {
-        $terceros->orderByDesc($orden);
-    } else {
-        $terceros->orderBy($orden);
+        if (request('dir') == 'desc') {
+            $terceros->orderByDesc($orden);
+        } else {
+            $terceros->orderBy($orden);
+        }
+
+        $terceros = $terceros->paginate(20)->appends($searchParams);
+
+        return view('terceros.index', [
+            'terceros' => $terceros,
+        ]);
     }
-
-    $terceros = $terceros->paginate(20)->appends($searchParams);
-
-    return view('terceros.index', [
-        'terceros' => $terceros,
-    ]);
-}
-
 
     public function show($id)
     {
@@ -160,5 +159,4 @@ class TercerosController extends Controller
 
         return redirect('/terceros')->with('success', 'Registro borrado correctamente');
     }
-
 }
