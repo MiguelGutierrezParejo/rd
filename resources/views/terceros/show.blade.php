@@ -1,22 +1,25 @@
 <x-layout>
     <div class="bg-white rounded-md max-w-4xl mx-auto p-4 space-y-4 shadow-lg">
-        <div class="flex justify-between">
-            <strong class="text-2xl">Datos del registro</strong>
-            <div>
-                <a href="{{route('terceros.edit', ['id' => $tercero->Id])}}"
-                    style="border-color:#0053D0; background-color: #0053D0" class="text-white bg-blue-700 font-semibold rounded-lg text-sm px-5 py-1 mr-2 text-center">Editar</a>
-            </div>
-            <div>
-                <form action="/rd/public/terceros/delete/{{$tercero->Id}}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button onclick="return confirm('¿Estás seguro de borrar este registro?')" type="submit"
-                        style="border-color:#7b241c; background-color: #7b241c" class="text-white bg-blue-700 font-semibold rounded-lg text-sm px-5 py-1 mr-2 text-center">Borrar</button>
-                </form>
+        <div class="bg-white rounded-md max-w-4xl mx-auto p-4 space-y-4 shadow-lg">
+            <div class="flex justify-between items-center">
+                <strong class="text-2xl">Datos del registro</strong>
+                <div class="flex space-x-2">
+                    <a href="{{route('terceros.edit', ['id' => $tercero->Id])}}"
+                        style="border-color:#0053D0; background-color: #0053D0"
+                        class="text-white bg-blue-700 font-semibold rounded-lg text-sm px-5 py-1 mr-2 text-center">Editar</a>
+                    <form action="/rd/public/terceros/delete/{{$tercero->Id}}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button onclick="return confirm('¿Estás seguro de borrar este registro?')" type="submit"
+                            style="border-color:#7b241c; background-color: #7b241c"
+                            class="text-white bg-blue-700 font-semibold rounded-lg text-sm px-5 py-1 mr-2 text-center">Borrar
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
 
-        <h3 class="border-t mb-2 pt-3 font-semibold">Nombre:
+        <h3 class="mb-2 pt-3 font-semibold">Nombre:
             <span class="font-thin">{{ $tercero->Nombre }}</span>
         </h3>
         <h3 class="border-t mb-2 pt-3 font-semibold">RD:
