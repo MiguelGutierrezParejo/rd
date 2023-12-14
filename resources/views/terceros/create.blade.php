@@ -1,7 +1,6 @@
 <x-layout>
     <form action="{{ route('terceros.store') }}" method="POST">
         @csrf
-        @method('POST')
 
         <h1 class="mb-4 text-2xl font-semibold">Crear registro</h1>
         <div class="flex">
