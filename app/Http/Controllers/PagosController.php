@@ -83,7 +83,7 @@ class PagosController extends Controller
         $pago = new Pago();
 
         $pago->IdRd = $validados['IdRd'];
-        $pago->Fecha = new DateTime($validados['Fecha']);
+        $pago->Fecha = new DateTime();
         $pago->Importe = $validados['Importe'];
         $pago->Texto = $validados['Texto'];
 
@@ -98,7 +98,11 @@ class PagosController extends Controller
 
         Tercero::where('RD', $validados['IdRd'])->update(['Total' => $Total]);
 
-        return redirect('/pagos')->with('success', 'Pago creado con éxito.');
+        if ($Total == 0) {
+            Tercero::where('RD', $validados['IdRd'])->update(['FechaPagado' => $validados['Fecha'], 'Estado' => 'Pagado']);
+        }
+
+        return redirect('/terceros' . '/' . $tercero->Id)->with('success', 'Pago creado con éxito.');
     }
 
     public function edit($id)
@@ -133,6 +137,12 @@ class PagosController extends Controller
 
         Tercero::where('RD', $validados['IdRd'])->update(['Total' => $Total]);
 
+        if ($Total == 0) {
+            Tercero::where('RD', $validados['IdRd'])->update(['FechaPagado' => new DateTime(), 'Estado' => 'Pagado']);
+        } else {
+            Tercero::where('RD', $validados['IdRd'])->update(['FechaPagado' => null, 'Estado' => 'Pendiente']);
+        }
+
         return redirect('pagos/'. $pago->Id)->with('success', 'Pago editado con éxito.');
     }
 
@@ -140,12 +150,13 @@ class PagosController extends Controller
     {
         $pago = Pago::findOrFail($id);
         $terceroRD = $pago->IdRd;
+        $tercero = Tercero::where('RD', $terceroRD)->first();
 
         // Borrar el pago
         $pago->delete();
 
         DB::select('DELETE FROM pagos WHERE id = ?', [$pago->Id]);
-        
+
         // Recalcular el total
         $nuevoTotal = DB::table('terceros')
             ->where('RD', $terceroRD)
@@ -157,8 +168,13 @@ class PagosController extends Controller
             ->where('RD', $terceroRD)
             ->update(['Total' => $nuevoTotal]);
 
+        if ($nuevoTotal == 0) {
+            Tercero::where('RD', $terceroRD)->update(['FechaPagado' => new DateTime(), 'Estado' => 'Pagado']);
+        } else {
+            Tercero::where('RD', $terceroRD)->update(['FechaPagado' => null, 'Estado' => 'Pendiente']);
 
-        return redirect('/pagos')->with('success', 'Pago borrado correctamente');
+        }
+
+        return redirect('terceros/' . $tercero->Id)->with('success', 'Pago borrado correctamente');
     }
-
 }

@@ -19,20 +19,6 @@
             @enderror
         </div>
         <div class="mb-6">
-            <label for="Fecha"
-                class="text-sm font-medium text-gray-900 block mb-2 @error('Fecha') text-red-500 @enderror">
-                Fecha
-            </label>
-            <input type="date" name="Fecha" id="Fecha"
-                class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/3 p-2.5 @error('Fecha') border-red-500 @enderror"
-                value="{{ old('Fecha', optional($pago->Fecha)->format('Y-m-d')) }}">
-            @error('Fecha')
-                <p class="text-red-500 text-sm mt-1">
-                    {{ $message }}
-                </p>
-            @enderror
-        </div>
-        <div class="mb-6">
             <label for="Texto"
                 class="text-sm font-medium text-gray-900 block mb-2 @error('Texto') text-red-500 @enderror">
                 Observaciones

@@ -18,75 +18,80 @@
                 </div>
             </div>
         </div>
+        <div class="flex justify-between items-center">
+            <h3 class="mb-2 pt-3 font-semibold">Nombre:
+                <span class="font-thin">{{ $tercero->Nombre }}</span>
+            </h3>
+            <h3 class="border-t mb-2 pt-3 font-semibold">Estado:
+                <span class="font-thin"> {{ $tercero->Estado }}</span>
+            </h3>
+        </div>
+        <div class="flex justify-between items-center">
+            <h3 class="border-t mb-2 pt-3 font-semibold">RD:
+                <span class="font-thin">{{ $tercero->RD }}</span>
+            </h3>
+            <h3 class="border-t mb-2 pt-3 font-semibold">DNI:
+                <span class="font-thin">{{ $tercero->DNI }}</span>
+            </h3>
+            <h3 class="border-t mb-2 pt-3 font-semibold">Número de Expediente:
+                <span class="font-thin">{{ $tercero->Expediente }}</span>
+            </h3>
+            <h3 class="border-t mb-2 pt-3 font-semibold">Fecha:
+                <span class="font-thin">  {{date('d-m-Y', strtotime($tercero->Fecha))}}</span>
+            </h3>
+        </div>
+        <div class="flex justify-between items-center">
+            <h3 class="border-t mb-2 pt-3 font-semibold">Importe:
+                <span class="font-thin"> {{ $tercero->Importe }} €</span>
+            </h3>
+            <h3 class="border-t mb-2 pt-3 font-semibold">Pendiente:
+                <span class="font-thin"> {{ $tercero->Total }} €</span>
+            </h3>
+        </div>
+        <div class="flex justify-between items-center">
 
-        <h3 class="mb-2 pt-3 font-semibold">Nombre:
-            <span class="font-thin">{{ $tercero->Nombre }}</span>
-        </h3>
-        <h3 class="border-t mb-2 pt-3 font-semibold">RD:
-            <span class="font-thin">{{ $tercero->RD }}</span>
-        </h3>
-        <h3 class="border-t mb-2 pt-3 font-semibold">DNI:
-            <span class="font-thin">{{ $tercero->DNI }}</span>
-        </h3>
-        <h3 class="border-t mb-2 pt-3 font-semibold">Número de Expediente:
-            <span class="font-thin">{{ $tercero->Expediente }}</span>
-        </h3>
-        <h3 class="border-t mb-2 pt-3 font-semibold">Importe:
-            <span class="font-thin"> {{ $tercero->Importe }}</span>
-        </h3>
-        <h3 class="border-t mb-2 pt-3 font-semibold">Fecha:
-            <span class="font-thin">  {{date('d-m-Y', strtotime($tercero->Fecha))}}</span>
-        </h3>
-        <h3 class="border-t mb-2 pt-3 font-semibold">Observaciones:
-            <span class="font-thin"> {{ $tercero->Texto }}</span>
-        </h3>
-        <h3 class="border-t mb-2 pt-3 font-semibold">Estado:
-            <span class="font-thin"> {{ $tercero->Estado }}</span>
-        </h3>
-        <h3 class="border-t mb-2 pt-3 font-semibold">Año:
-            <span class="font-thin"> {{ $tercero->Año }}</span>
-        </h3>
-        <h3 class="border-t mb-2 pt-3 font-semibold">Total:
-            <span class="font-thin"> {{ $tercero->Total }}</span>
-        </h3>
-        <h3 class="border-t mb-2 pt-3 font-semibold">Fecha Pagado:
-            <span class="font-thin">
-                @if ($tercero->FechaPagado != null)
+            <h3 class="border-t mb-2 pt-3 font-semibold">Fecha Pagado:
+                <span class="font-thin">
+                    @if ($tercero->FechaPagado != null)
                     {{date('d-m-Y', strtotime($tercero->FechaPagado))}}
-                @else
+                    @else
                     {{$tercero->FechaPagado}}
-                @endif
-            </span>
-        </h3>
-        <h3 class="border-t mb-2 pt-3 font-semibold">Fecha Ejecutiva:
-            <span class="font-thin">
-                @if ($tercero->FechaEjecutiva != null)
+                    @endif
+                </span>
+            </h3>
+            <h3 class="border-t mb-2 pt-3 font-semibold">Fecha Ejecutiva:
+                <span class="font-thin">
+                    @if ($tercero->FechaEjecutiva != null)
                     {{date('d-m-Y', strtotime($tercero->FechaEjecutiva))}}
-                @else
+                    @else
                     {{$tercero->FechaEjecutiva}}
-                @endif
-            </span>
-        </h3>
-        <h3 class="border-t mb-2 pt-3 font-semibold">Fecha Notificación:
-            <span class="font-thin">
-                @if ($tercero->FechaNotificacion != null)
+                    @endif
+                </span>
+            </h3>
+            <h3 class="border-t mb-2 pt-3 font-semibold">Fecha Notificación:
+                <span class="font-thin">
+                    @if ($tercero->FechaNotificacion != null)
                     {{date('d-m-Y', strtotime($tercero->FechaNotificacion))}}
-                @else
+                    @else
                     {{$tercero->FechaNotificacion}}
-                @endif
-            </span>
-        </h3>
+                    @endif
+                </span>
+            </h3>
+            <h3 class="border-t mb-2 pt-3 font-semibold">Fecha Anulación:
+                <span class="font-thin">
+                    @if ($tercero->FechaAnulacion != null)
+                    {{date('d-m-Y', strtotime($tercero->FechaAnulacion))}}
+                    @else
+                    {{$tercero->FechaAnulacion}}
+                    @endif
+                </span>
+            </h3>
+        </div>
         <h3 class="border-t mb-2 pt-3 font-semibold">Motivo:
             <span class="font-thin"> {{ $tercero->Motivo }}</span>
         </h3>
-        <h3 class="border-t mb-2 pt-3 font-semibold">Fecha Anulación:
-            <span class="font-thin">
-                @if ($tercero->FechaAnulacion != null)
-                    {{date('d-m-Y', strtotime($tercero->FechaAnulacion))}}
-                @else
-                    {{$tercero->FechaAnulacion}}
-                @endif
-            </span>
+        <h3 class="border-t mb-2 pt-3 font-semibold">Observaciones:
+            <span class="font-thin"> {{ $tercero->Texto }}</span>
         </h3>
     </div>
 
