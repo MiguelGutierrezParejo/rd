@@ -139,11 +139,26 @@ class PagosController extends Controller
     public function destroy($id)
     {
         $pago = Pago::findOrFail($id);
+        $terceroRD = $pago->IdRd;
 
+        // Borrar el pago
         $pago->delete();
 
         DB::select('DELETE FROM pagos WHERE id = ?', [$pago->Id]);
+        
+        // Recalcular el total
+        $nuevoTotal = DB::table('terceros')
+            ->where('RD', $terceroRD)
+            ->selectRaw('Importe - COALESCE((SELECT SUM(Importe) FROM pagos WHERE IdRd = ?), 0) AS nuevoTotal', [$terceroRD])
+            ->value('nuevoTotal');
+
+        // Actualizar el total en la tabla terceros
+        DB::table('terceros')
+            ->where('RD', $terceroRD)
+            ->update(['Total' => $nuevoTotal]);
+
 
         return redirect('/pagos')->with('success', 'Pago borrado correctamente');
     }
+
 }
