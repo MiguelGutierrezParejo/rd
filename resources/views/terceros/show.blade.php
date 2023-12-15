@@ -93,7 +93,11 @@
     <br>
 
     <div class="bg-white rounded-md max-w-4xl mx-auto p-4 space-y-4 shadow-lg">
-        <strong class="text-2xl">Historial de pagos</strong>
+        <div class="flex justify-between">
+            <strong class="text-2xl">Historial de pagos</strong>
+            <a href="{{ route('pagos.create', ['IdRd' => $tercero->RD]) }}"
+                class="text-white bg-green-700 font-semibold rounded-lg text-sm px-5 py-1 mr-2 text-center">Añadir Pago</a>
+        </div>
         <table class="table-fixed border border-gray-500 border-collapse mt-14">
             <thead>
                 <tr class="border-b-2 border-black">

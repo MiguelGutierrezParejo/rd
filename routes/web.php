@@ -22,7 +22,7 @@ Route::get('/', function () {
 Route::get('/terceros', [TercerosController::class, 'index'])
     ->name('terceros.index');
 Route::get('/terceros/create', [TercerosController::class, 'create'])
-    ->name('terceros.creade');
+    ->name('terceros.create');
 Route::post('/terceros', [TercerosController::class, 'store'])
     ->name('terceros.store');
 Route::get('/terceros/{id}', [TercerosController::class, 'show'])
@@ -36,8 +36,8 @@ Route::delete('/terceros/delete/{id}', [TercerosController::class, 'destroy']);
 
 Route::get('/pagos', [PagosController::class, 'index'])
     ->name('pagos.index');
-Route::get('/pagos/create', [PagosController::class, 'create'])
-    ->name('pagos.creade');
+Route::get('/pagos/create/{IdRd}', [PagosController::class, 'create'])
+    ->name('pagos.create');
 Route::post('/pagos', [PagosController::class, 'store'])
     ->name('pagos.store');
 Route::get('/pagos/{id}', [PagosController::class, 'show'])

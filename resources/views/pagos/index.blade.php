@@ -6,10 +6,6 @@
                 <a href="/rd/public/pagos" style="background-color: #0053D0"
                     class="text-white font-semibold rounded-lg text-sm px-5 py-1 text-center">Limpiar filtro
                 </a>
-                &nbsp; | &nbsp;
-                <a href="/rd/public/pagos/create" style="background-color: #0053D0"
-                    class="text-white font-semibold rounded-lg text-sm px-5 py-1 text-center">Nuevo Pago
-                </a>
             </div>
             <table width="100%" class="table-fixed border-collapse border border-slate-400 text-left">
                 <thead class="bg-gray-100">

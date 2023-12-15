@@ -64,12 +64,14 @@ class PagosController extends Controller
         return $validados;
     }
 
-    public function create()
+    public function create($IdRd)
     {
         $pago = new Pago();
+        $IdRd = DB::select("SELECT terceros.RD FROM terceros WHERE terceros.RD = $IdRd");
 
         return view('pagos.create', [
             'pago' => $pago,
+            'IdRd' => $IdRd[0]->RD,
         ]);
     }
 
