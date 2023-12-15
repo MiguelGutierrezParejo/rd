@@ -127,20 +127,6 @@
                     @enderror
                 </div>
                 <div class="mb-6">
-                    <label for="Total"
-                        class="text-sm font-medium text-gray-900 block mb-2 @error('Total') text-red-500 @enderror">
-                        Total
-                    </label>
-                    <input type="text" name="Total" id="Total" style="width: 110px"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 @error('Total') border-red-500 @enderror"
-                        value="{{ old('Total', $tercero->Total) }}">
-                    @error('Modelo')
-                        <p class="text-red-500 text-sm mt-1">
-                            {{ $message }}
-                        </p>
-                    @enderror
-                </div>
-                <div class="mb-6">
                     <label for="FechaPagado"
                         class="text-sm font-medium text-gray-900 block mb-2 @error('FechaPagado') text-red-500 @enderror">
                         Fecha pagado

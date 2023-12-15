@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pago;
+use App\Models\Tercero;
 use DateTime;
 use Illuminate\Support\Facades\DB;
 
@@ -88,6 +89,15 @@ class PagosController extends Controller
 
         $pago->save();
 
+        // Buscar el Tercero asociado al pago
+        $tercero = Tercero::where('RD', $validados['IdRd'])->first();
+
+        // Actualizar el campo Total en la tabla de terceros
+        $totalPagos = Pago::where('IdRd', $validados['IdRd'])->sum('Importe');
+        $Total = $tercero->Importe - $totalPagos;
+
+        Tercero::where('RD', $validados['IdRd'])->update(['Total' => $Total]);
+
         return redirect('/pagos')->with('success', 'Pago creado con éxito.');
     }
 
@@ -113,6 +123,15 @@ class PagosController extends Controller
             'Importe' => $validados['Importe'],
             'Texto' => $validados['Texto'],
         ]);
+
+        // Buscar el Tercero asociado al pago
+        $tercero = Tercero::where('RD', $validados['IdRd'])->first();
+
+        // Actualizar el campo Total en la tabla de terceros
+        $totalPagos = Pago::where('IdRd', $validados['IdRd'])->sum('Importe');
+        $Total = $tercero->Importe - $totalPagos;
+
+        Tercero::where('RD', $validados['IdRd'])->update(['Total' => $Total]);
 
         return redirect('pagos/'. $pago->Id)->with('success', 'Pago editado con éxito.');
     }

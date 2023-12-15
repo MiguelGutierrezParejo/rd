@@ -100,7 +100,7 @@ class TercerosController extends Controller
         $tercero->RD = $validados['RD'];
         $tercero->Estado = $validados['Estado'];
         $tercero->Año = $validados['Año'];
-        $tercero->Total = $validados['Total'];
+        $tercero->Total = $validados['Importe'];
         $tercero->FechaPagado = new DateTime($validados['FechaPagado']);
         $tercero->FechaEjecutiva = new DateTime($validados['FechaEjecutiva']);
         $tercero->FechaNotificacion = new DateTime($validados['FechaNotificacion']);
@@ -138,7 +138,6 @@ class TercerosController extends Controller
             'RD' => $validados['RD'],
             'Estado' => $validados['Estado'],
             'Año' => $validados['Año'],
-            'Total' => $validados['Total'],
             'FechaPagado' => $validados['FechaPagado'],
             'FechaEjecutiva' => $validados['FechaEjecutiva'],
             'FechaNotificacion' => $validados['FechaNotificacion'],
@@ -146,6 +145,12 @@ class TercerosController extends Controller
             'FechaAnulacion' => $validados['FechaAnulacion'],
         ]);
 
+        // Recalcula el campo Total de la misma manera que al actualizar pagos
+        $totalPagos = DB::table('pagos')->where('IdRd', $validados['RD'])->sum('Importe');
+        $nuevoTotal = $validados['Importe'] - $totalPagos;
+
+        Tercero::where('id', $id)->update(['Total' => $nuevoTotal]);
+        
         return redirect('terceros/'. $tercero->Id)->with('success', 'Registro editado con éxito.');
     }
 

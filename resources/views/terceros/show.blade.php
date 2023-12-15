@@ -107,12 +107,16 @@
                 </tr>
             </thead>
             @php
-                $pagos = DB::select("SELECT pagos.Fecha, pagos.Importe, pagos.Texto FROM pagos WHERE pagos.IdRd = $tercero->RD");
+                $pagos = DB::select("SELECT pagos.Id, pagos.Fecha, pagos.Importe, pagos.Texto FROM pagos WHERE pagos.IdRd = $tercero->RD");
             @endphp
             <tbody>
                 @foreach ($pagos as $pago)
                     <tr class="border border-black">
-                        <td class="text-left px-2 border border-black">{{ date('d-m-Y', strtotime($pago->Fecha)) }}</td>
+                        <td class="text-left px-2 border border-black">
+                            <a href="{{ route('pagos.show', ['id' => $pago->Id]) }}">
+                                {{ date('d-m-Y', strtotime($pago->Fecha)) }}
+                            </a>
+                        </td>
 
                         <td class="px-2 border border-black">{{$pago->Importe}}</td>
 
