@@ -11,21 +11,24 @@ class PagosController extends Controller
 {
     public function index()
     {
-        $ordenes = ['IdRd', 'Fecha', 'Importe'];
-        $orden = request()->query('orden') ?: 'IdRd';
+        $ordenes = ['IdRd', 'Fecha', 'Importe', 'Nombre'];
+        $orden = request()->query('orden') ?: 'Nombre';
         abort_unless(in_array($orden, $ordenes), 404);
 
         $searchParams = [
             'IdRd' => request('IdRd'),
             'Fecha' => request('Fecha'),
             'Importe' => request('Importe'),
+            'Nombre' => request('Nombre'),
         ];
 
         $pagos = DB::table('pagos')
-            ->select('pagos.*')
+            ->leftJoin('terceros', 'terceros.RD', '=', 'pagos.IdRd')
+            ->select('pagos.*', 'terceros.Nombre')
+            ->where('Nombre', 'LIKE', '%'.request('Nombre').'%')
             ->where('IdRd', 'LIKE', '%' . request('IdRd') . '%')
-            ->where('Fecha', 'LIKE', '%' . request('Fecha') . '%')
-            ->where('Importe', 'LIKE', '%' . request('Importe') . '%');
+            ->where('pagos.Fecha', 'LIKE', '%' . request('Fecha') . '%')
+            ->where('pagos.Importe', 'LIKE', '%' . request('Importe') . '%');
 
         if (request('dir') == 'desc') {
             $pagos->orderByDesc($orden);

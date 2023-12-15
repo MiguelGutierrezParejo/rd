@@ -21,6 +21,18 @@
                     <tr>
                         <th class="border border-slate-300 px-6 py-2 font-semibold">
                             <a
+                                href="{!! $enlace !!}?orden=Nombre&dir={{ request('dir') == 'asc' ? 'desc' : 'asc' }}&{!! $link !!}">Usuario
+                                @if (request('orden') == 'Nombre')
+                                    @if (request('dir', 'asc') == 'asc')
+                                        &darr;
+                                    @else
+                                        &uarr;
+                                    @endif
+                                @endif
+                            </a>
+                        </th>
+                        <th class="border border-slate-300 px-6 py-2 font-semibold">
+                            <a
                                 href="{!! $enlace !!}?orden=IdRd&dir={{ request('dir') == 'asc' ? 'desc' : 'asc' }}&{!! $link !!}">RD
                                 @if (request('orden') == 'IdRd')
                                     @if (request('dir', 'asc') == 'asc')
@@ -67,6 +79,10 @@
                             <input type="hidden" name="dir" value="{{ old('dir') }}">
                             <td class="w-3/12 border border-slate-300 px-6 py-2 font-semibold">
                                 <input type="text" class="border border-slate-300 px-6 py-2"
+                                name="Nombre" id="Nombre" value="{{ request()->query('Nombre') }}">
+                            </td>
+                            <td class="w-3/12 border border-slate-300 px-6 py-2 font-semibold">
+                                <input type="text" class="border border-slate-300 px-6 py-2"
                                 name="IdRd" id="IdRd" value="{{ request()->query('IdRd') }}">
                             </td>
                             <td class="w-2/12 border border-slate-300 px-6 py-2 font-semibold">
@@ -86,6 +102,16 @@
                     @foreach ($pagos as $pago)
 
                         <tr class="border border-slate-400">
+                            @php
+                                $nombres = DB::select("SELECT terceros.Nombre, terceros.Id FROM terceros WHERE terceros.RD = $pago->IdRd");
+                            @endphp
+                            <td class="border border-slate-300 px-6 py-4">
+                                <div class="text-sm text-gray-900">
+                                    @foreach ( $nombres as $nombre )
+                                    <a href="{{ route('terceros.show', ['id' => $nombre->Id]) }}">{{ $nombre->Nombre }}</a>
+                                    @endforeach
+                                </div>
+                            </td>
                             <td class="border border-slate-300 px-6 py-4">
                                 <div class="text-sm text-gray-900">
                                    <a href="{{ route('pagos.show', ['id' => $pago->Id]) }}">{{$pago->IdRd}}</a>
