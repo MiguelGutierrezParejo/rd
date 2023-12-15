@@ -99,7 +99,7 @@ class PagosController extends Controller
         Tercero::where('RD', $validados['IdRd'])->update(['Total' => $Total]);
 
         if ($Total == 0) {
-            Tercero::where('RD', $validados['IdRd'])->update(['FechaPagado' => $validados['Fecha'], 'Estado' => 'Pagado']);
+            Tercero::where('RD', $validados['IdRd'])->update(['FechaPagado' => $pago->Fecha, 'Estado' => 'Pagado']);
         }
 
         return redirect('/terceros' . '/' . $tercero->Id)->with('success', 'Pago creado con éxito.');

@@ -50,42 +50,34 @@
         </div>
         <div class="flex justify-between items-center">
 
-            <h3 class="border-t mb-2 pt-3 font-semibold">Fecha Pagado:
-                <span class="font-thin">
-                    @if ($tercero->FechaPagado != null)
-                    {{date('d-m-Y', strtotime($tercero->FechaPagado))}}
-                    @else
-                    {{$tercero->FechaPagado}}
-                    @endif
-                </span>
-            </h3>
-            <h3 class="border-t mb-2 pt-3 font-semibold">Fecha Ejecutiva:
-                <span class="font-thin">
-                    @if ($tercero->FechaEjecutiva != null)
-                    {{date('d-m-Y', strtotime($tercero->FechaEjecutiva))}}
-                    @else
-                    {{$tercero->FechaEjecutiva}}
-                    @endif
-                </span>
-            </h3>
-            <h3 class="border-t mb-2 pt-3 font-semibold">Fecha Notificación:
-                <span class="font-thin">
-                    @if ($tercero->FechaNotificacion != null)
-                    {{date('d-m-Y', strtotime($tercero->FechaNotificacion))}}
-                    @else
-                    {{$tercero->FechaNotificacion}}
-                    @endif
-                </span>
-            </h3>
-            <h3 class="border-t mb-2 pt-3 font-semibold">Fecha Anulación:
-                <span class="font-thin">
-                    @if ($tercero->FechaAnulacion != null)
-                    {{date('d-m-Y', strtotime($tercero->FechaAnulacion))}}
-                    @else
-                    {{$tercero->FechaAnulacion}}
-                    @endif
-                </span>
-            </h3>
+            @if ($tercero->FechaPagado != null)
+                <h3 class="border-t mb-2 pt-3 font-semibold">Fecha Pagado:
+                    <span class="font-thin">
+                        {{date('d-m-Y', strtotime($tercero->FechaPagado))}}
+                    </span>
+                </h3>
+            @endif
+            @if ($tercero->FechaEjecutiva != null)
+                <h3 class="border-t mb-2 pt-3 font-semibold">Fecha Ejecutiva:
+                    <span class="font-thin">
+                        {{date('d-m-Y', strtotime($tercero->FechaEjecutiva))}}
+                    </span>
+                </h3>
+            @endif
+            @if ($tercero->FechaNotificacion != null)
+                <h3 class="border-t mb-2 pt-3 font-semibold">Fecha Notificación:
+                    <span class="font-thin">
+                        {{date('d-m-Y', strtotime($tercero->FechaNotificacion))}}
+                    </span>
+                </h3>
+            @endif
+            @if ($tercero->FechaAnulacion != null)
+                <h3 class="border-t mb-2 pt-3 font-semibold">Fecha Anulación:
+                    <span class="font-thin">
+                        {{date('d-m-Y', strtotime($tercero->FechaAnulacion))}}
+                    </span>
+                </h3>
+            @endif
         </div>
         <h3 class="border-t mb-2 pt-3 font-semibold">Motivo:
             <span class="font-thin"> {{ $tercero->Motivo }}</span>
