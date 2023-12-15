@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PagosController;
 use App\Http\Controllers\TercerosController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,6 +32,21 @@ Route::get('/terceros/edit/{id}', [TercerosController::class, 'edit'])
 Route::put('/terceros/{id}', [TercerosController::class, 'update'])
     ->name('terceros.update');
 Route::delete('/terceros/delete/{id}', [TercerosController::class, 'destroy']);
+
+
+Route::get('/pagos', [PagosController::class, 'index'])
+    ->name('pagos.index');
+Route::get('/pagos/create', [PagosController::class, 'create'])
+    ->name('pagos.creade');
+Route::post('/pagos', [PagosController::class, 'store'])
+    ->name('pagos.store');
+Route::get('/pagos/{id}', [PagosController::class, 'show'])
+    ->name('pagos.show');
+Route::get('/pagos/edit/{id}', [PagosController::class, 'edit'])
+    ->name('pagos.edit');
+Route::put('/pagos/{id}', [PagosController::class, 'update'])
+    ->name('pagos.update');
+Route::delete('/pagos/delete/{id}', [PagosController::class, 'destroy']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
