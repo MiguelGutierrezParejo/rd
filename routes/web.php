@@ -39,7 +39,8 @@ Route::get('/terceros/fechaanular/{id}', [TercerosController::class, 'fechaanula
     ->name('terceros.fechaanular');
  Route::put('/terceros/anular/{id}', [TercerosController::class, 'anular'])
     ->name('terceros.anular');
-
+Route::put('/terceros/reactivar/{id}', [TercerosController::class, 'reactivar'])
+    ->name('terceros.reactivar');
 
 
 Route::get('/pagos', [PagosController::class, 'index'])

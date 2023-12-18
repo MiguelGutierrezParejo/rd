@@ -13,8 +13,13 @@
                         <a href="{{route('terceros.fechaanular', ['id' => $tercero->Id])}}"
                             class="text-white bg-red-700 font-semibold rounded-lg text-sm px-5 py-1 mr-2 text-center">Anular</a>
                     @else
-                    <a href="{{route('terceros.fechaanular', ['id' => $tercero->Id])}}"
-                        class="text-white bg-red-700 font-semibold rounded-lg text-sm px-5 py-1 mr-2 text-center">Reactivar</a>
+                    <form action="{{route('terceros.reactivar', ['id' => $tercero->Id])}}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <button type="submit" onclick="return confirm('¿Estás seguro de dar de alta este registro?')"
+                            style="border-color:#7b241c; background-color: #b91c1c"
+                            class="text-white bg-blue-700 font-semibold rounded-lg text-sm px-5 py-1 mr-2 text-center">Dar de alta</button>
+                        </form>
                     @endif
                 </div>
             </div>

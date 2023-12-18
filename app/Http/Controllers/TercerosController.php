@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Tercero;
 use DateTime;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class TercerosController extends Controller
 {
@@ -135,7 +136,6 @@ class TercerosController extends Controller
             'Texto' => $validados['Texto'],
             'RD' => $validados['RD'],
             'Estado' => $validados['Estado'],
-            'FechaPagado' => $validados['FechaPagado'],
             'FechaEjecutiva' => $validados['FechaEjecutiva'],
             'FechaNotificacion' => $validados['FechaNotificacion'],
         ]);
@@ -163,27 +163,37 @@ class TercerosController extends Controller
         $tercero = Tercero::findOrFail($id);
         $validados = $this->validar();
 
-        if ($tercero->FechaAnulacion) {
+         // Obtener el usuario autenticado
+        $usuarioAutenticado = auth()->user();
 
-            DB::table('terceros')
-            ->where('id', $id)
-            ->update([
-                'FechaAnulacion' => $validados['FechaAnulacion'],
-                'Estado' => $validados['Estado'],
-            ]);
-
-        } else {
-
-            DB::table('terceros')
-            ->where('id', $id)
-            ->update([
-                'FechaAnulacion' => $validados['FechaAnulacion'],
-                'Motivo' => $validados['Motivo'],
-                'Estado' => 'Anulado',
-            ]);
+        // Verificar la contraseña
+        if (!Hash::check(request()->input('Contraseña'), $usuarioAutenticado->password)) {
+            return redirect()->back()->withErrors(['Contraseña' => 'La contraseña no es correcta']);
         }
 
+        DB::table('terceros')
+        ->where('id', $id)
+        ->update([
+            'FechaAnulacion' => $validados['FechaAnulacion'],
+            'Motivo' => $validados['Motivo'],
+            'Estado' => 'Anulado',
+        ]);
+
         return redirect('terceros/' . $tercero->Id)->with('success', 'Fecha de anulación añadida correctamente');
+    }
+
+    public function reactivar($id)
+    {
+        $tercero = Tercero::findOrFail($id);
+
+        DB::table('terceros')
+        ->where('id', $id)
+        ->update([
+            'FechaAnulacion' => null,
+            'Estado' => 'Pendiente',
+        ]);
+
+        return redirect('terceros/' . $tercero->Id)->with('success', 'Registro dado de alta correctamente');
     }
 
     public function fechaejecutiva($id)
