@@ -139,7 +139,7 @@
                     </label>
                     <input type="date" name="FechaEjecutiva" id="FechaEjecutiva"
                         class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/3 p-2.5 @error('FechaEjecutiva') border-red-500 @enderror"
-                        value="{{ old('FechaPagado', optional($tercero->FechaPagado)->format('Y-m-d')) }}">
+                        value="{{ old('FechaEjecutiva', optional($tercero->FechaEjecutiva)->format('Y-m-d')) }}">
                     @error('Modelo')
                         <p class="text-red-500 text-sm mt-1">
                             {{ $message }}
