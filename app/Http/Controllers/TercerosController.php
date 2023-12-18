@@ -138,8 +138,6 @@ class TercerosController extends Controller
             'FechaPagado' => $validados['FechaPagado'],
             'FechaEjecutiva' => $validados['FechaEjecutiva'],
             'FechaNotificacion' => $validados['FechaNotificacion'],
-            'Motivo' => $validados['Motivo'],
-            'FechaAnulacion' => $validados['FechaAnulacion'],
         ]);
 
         // Recalcula el campo Total de la misma manera que al actualizar pagos
@@ -165,13 +163,25 @@ class TercerosController extends Controller
         $tercero = Tercero::findOrFail($id);
         $validados = $this->validar();
 
-        DB::table('terceros')
-        ->where('id', $id)
-        ->update([
-            'FechaAnulacion' => $validados['FechaAnulacion'],
-            'Motivo' => $validados['Motivo'],
-            'Estado' => 'Anulado',
-        ]);
+        if ($tercero->FechaAnulacion) {
+
+            DB::table('terceros')
+            ->where('id', $id)
+            ->update([
+                'FechaAnulacion' => $validados['FechaAnulacion'],
+                'Estado' => $validados['Estado'],
+            ]);
+
+        } else {
+
+            DB::table('terceros')
+            ->where('id', $id)
+            ->update([
+                'FechaAnulacion' => $validados['FechaAnulacion'],
+                'Motivo' => $validados['Motivo'],
+                'Estado' => 'Anulado',
+            ]);
+        }
 
         return redirect('terceros/' . $tercero->Id)->with('success', 'Fecha de anulación añadida correctamente');
     }

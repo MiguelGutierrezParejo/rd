@@ -4,13 +4,18 @@
             <div class="flex justify-between items-center">
                 <strong class="text-2xl">Datos del registro</strong>
                 <div class="flex space-x-2">
-                    <a href="{{route('terceros.edit', ['id' => $tercero->Id])}}"
-                        style="border-color:#0053D0; background-color: #0053D0"
-                        class="text-white bg-blue-700 font-semibold rounded-lg text-sm px-5 py-1 mr-2 text-center">Editar</a>
-                    <a href="{{route('terceros.fechaejecutiva', ['id' => $tercero->Id])}}"
-                        class="text-white bg-green-700 font-semibold rounded-lg text-sm px-5 py-1 mr-2 text-center">Ejecutiva</a>
+                    @if ($tercero->FechaAnulacion == null)
+                        <a href="{{route('terceros.edit', ['id' => $tercero->Id])}}"
+                            style="border-color:#0053D0; background-color: #0053D0"
+                            class="text-white bg-blue-700 font-semibold rounded-lg text-sm px-5 py-1 mr-2 text-center">Editar</a>
+                        <a href="{{route('terceros.fechaejecutiva', ['id' => $tercero->Id])}}"
+                            class="text-white bg-green-700 font-semibold rounded-lg text-sm px-5 py-1 mr-2 text-center">Ejecutiva</a>
+                        <a href="{{route('terceros.fechaanular', ['id' => $tercero->Id])}}"
+                            class="text-white bg-red-700 font-semibold rounded-lg text-sm px-5 py-1 mr-2 text-center">Anular</a>
+                    @else
                     <a href="{{route('terceros.fechaanular', ['id' => $tercero->Id])}}"
-                        class="text-white bg-red-700 font-semibold rounded-lg text-sm px-5 py-1 mr-2 text-center">Anular</a>
+                        class="text-white bg-red-700 font-semibold rounded-lg text-sm px-5 py-1 mr-2 text-center">Reactivar</a>
+                    @endif
                 </div>
             </div>
         </div>
@@ -96,8 +101,10 @@
     <div class="bg-white rounded-md max-w-4xl mx-auto p-4 space-y-4 shadow-lg">
         <div class="flex justify-between">
             <strong class="text-2xl">Historial de pagos</strong>
-            <a href="{{ route('pagos.create', ['IdRd' => $tercero->RD]) }}"
-                class="text-white bg-green-700 font-semibold rounded-lg text-sm px-5 py-1 mr-2 text-center">Añadir Pago</a>
+            @if ($tercero->FechaAnulacion == null)
+                <a href="{{ route('pagos.create', ['IdRd' => $tercero->RD]) }}"
+                    class="text-white bg-green-700 font-semibold rounded-lg text-sm px-5 py-1 mr-2 text-center">Añadir Pago</a>
+            @endif
         </div>
         <table class="table-fixed border border-gray-500 border-collapse mt-14">
             <thead>
