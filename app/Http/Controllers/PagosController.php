@@ -83,7 +83,7 @@ class PagosController extends Controller
         $pago = new Pago();
 
         $pago->IdRd = $validados['IdRd'];
-        $pago->Fecha = new DateTime();
+        $pago->Fecha = $validados['Fecha'];
         $pago->Importe = $validados['Importe'];
         $pago->Texto = $validados['Texto'];
 
@@ -122,7 +122,6 @@ class PagosController extends Controller
         DB::table('pagos')
         ->where('id', $id)
         ->update([
-            'IdRd' => $validados['IdRd'],
             'Fecha' => date('Y-m-d', strtotime($validados['Fecha'])),
             'Importe' => $validados['Importe'],
             'Texto' => $validados['Texto'],

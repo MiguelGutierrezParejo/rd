@@ -6,20 +6,6 @@
         <h1 class="mb-4 text-2xl font-semibold">Editar pago</h1>
 
         <div class="mb-6">
-            <label for="IdRd"
-                class="text-sm font-medium text-gray-900 block mb-2 @error('IdRd') text-red-500 @enderror">
-                RD
-            </label>
-            <input type="text" name="IdRd" id="IdRd"
-                class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-300 p-2.5 @error('IdRd') border-red-500 @enderror"
-                value="{{ old('IdRd', $pago->IdRd) }}">
-            @error('Modelo')
-                <p class="text-red-500 text-sm mt-1">
-                    {{ $message }}
-                </p>
-            @enderror
-        </div>
-        <div class="mb-6">
             <label for="Importe"
                 class="text-sm font-medium text-gray-900 block mb-2 @error('Importe') text-red-500 @enderror">
                 Importe
