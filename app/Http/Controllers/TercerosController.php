@@ -168,7 +168,7 @@ class TercerosController extends Controller
 
         // Verificar la contraseña
         if (!Hash::check(request()->input('Contraseña'), $usuarioAutenticado->password)) {
-            return redirect()->back()->withErrors(['Contraseña' => 'La contraseña no es correcta']);
+            return redirect()->back()->withErrors(['Contraseña' => 'La contraseña no es correcta'])->with('error', 'Verifique los datos introducidos');
         }
 
         DB::table('terceros')

@@ -37,8 +37,8 @@
                 class="text-sm font-medium text-gray-900 block mb-2 @error('Contraseña') text-red-500 @enderror">
                 Contraseña (de usuario)
             </label>
-            <input type="password" name="Contraseña" id="Contraseña"
-                class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('Contraseña') border-red-500 @enderror">
+            <input type="password" name="Contraseña" id="Contraseña" style="width: 350px"
+                class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 @error('Contraseña') border-red-500 @enderror">
             @error('Contraseña')
                 <p class="text-red-500 text-sm mt-1">
                     {{ $message }}
