@@ -31,7 +31,15 @@ Route::get('/terceros/edit/{id}', [TercerosController::class, 'edit'])
     ->name('terceros.edit');
 Route::put('/terceros/{id}', [TercerosController::class, 'update'])
     ->name('terceros.update');
-Route::delete('/terceros/delete/{id}', [TercerosController::class, 'destroy']);
+Route::get('/terceros/fechaejecutiva/{id}', [TercerosController::class, 'fechaejecutiva'])
+    ->name('terceros.fechaejecutiva');
+Route::put('/terceros/ejecutiva/{id}', [TercerosController::class, 'ejecutiva'])
+    ->name('terceros.ejecutiva');
+Route::get('/terceros/fechaanular/{id}', [TercerosController::class, 'fechaanular'])
+    ->name('terceros.fechaanular');
+ Route::put('/terceros/anular/{id}', [TercerosController::class, 'anular'])
+    ->name('terceros.anular');
+
 
 
 Route::get('/pagos', [PagosController::class, 'index'])

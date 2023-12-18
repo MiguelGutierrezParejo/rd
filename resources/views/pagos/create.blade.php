@@ -12,7 +12,7 @@
             <input type="text" name="Importe" id="Importe"
                 class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-300 p-2.5 @error('Importe') border-red-500 @enderror"
                 value="{{ old('Importe', $pago->Importe) }}">
-            @error('Modelo')
+            @error('Importe')
                 <p class="text-red-500 text-sm mt-1">
                     {{ $message }}
                 </p>
@@ -40,7 +40,7 @@
             <input type="text" name="Texto" id="Texto"
                 class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('Texto') border-red-500 @enderror"
                 value="{{ old('Texto', $pago->Texto) }}">
-            @error('Modelo')
+            @error('Texto')
                 <p class="text-red-500 text-sm mt-1">
                     {{ $message }}
                 </p>

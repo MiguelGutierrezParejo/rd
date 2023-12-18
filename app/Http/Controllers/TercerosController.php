@@ -62,9 +62,8 @@ class TercerosController extends Controller
             'Importe' => 'nullable',
             'Fecha' => 'nullable|date_format:Y-m-d',
             'Texto' => 'nullable|max:200',
-            'RD' => 'required',
+            'RD' => 'nullable',
             'Estado' => 'nullable|max:50',
-            'Año' => 'nullable',
             'Total' => 'nullable',
             'FechaPagado' => 'nullable|date_format:Y-m-d',
             'FechaEjecutiva' => 'nullable|date_format:Y-m-d',
@@ -99,7 +98,6 @@ class TercerosController extends Controller
         $tercero->Texto = $validados['Texto'];
         $tercero->RD = $validados['RD'];
         $tercero->Estado = $validados['Estado'];
-        $tercero->Año = $validados['Año'];
         $tercero->Total = $validados['Importe'];
         $tercero->FechaPagado = new DateTime($validados['FechaPagado']);
         $tercero->FechaEjecutiva = new DateTime($validados['FechaEjecutiva']);
@@ -137,7 +135,6 @@ class TercerosController extends Controller
             'Texto' => $validados['Texto'],
             'RD' => $validados['RD'],
             'Estado' => $validados['Estado'],
-            'Año' => $validados['Año'],
             'FechaPagado' => $validados['FechaPagado'],
             'FechaEjecutiva' => $validados['FechaEjecutiva'],
             'FechaNotificacion' => $validados['FechaNotificacion'],
@@ -154,14 +151,51 @@ class TercerosController extends Controller
         return redirect('terceros/'. $tercero->Id)->with('success', 'Registro editado con éxito.');
     }
 
-    public function destroy($id)
+    public function fechaanular($id)
     {
         $tercero = Tercero::findOrFail($id);
 
-        $tercero->delete();
+        return view('terceros.fechaanular', [
+            'tercero' => $tercero,
+        ]);
+    }
 
-        DB::select('DELETE FROM terceros WHERE id = ?', [$tercero->Id]);
+    public function anular($id)
+    {
+        $tercero = Tercero::findOrFail($id);
+        $validados = $this->validar();
 
-        return redirect('/terceros')->with('success', 'Registro borrado correctamente');
+        DB::table('terceros')
+        ->where('id', $id)
+        ->update([
+            'FechaAnulacion' => $validados['FechaAnulacion'],
+            'Estado' => 'Anulado',
+        ]);
+
+        return redirect('terceros/' . $tercero->Id)->with('success', 'Fecha de anulación añadida correctamente');
+    }
+
+    public function fechaejecutiva($id)
+    {
+        $tercero = Tercero::findOrFail($id);
+
+        return view('terceros.fechaejecutiva', [
+            'tercero' => $tercero,
+        ]);
+    }
+
+    public function ejecutiva($id)
+    {
+        $tercero = Tercero::findOrFail($id);
+        $validados = $this->validar();
+
+        DB::table('terceros')
+        ->where('id', $id)
+        ->update([
+            'FechaEjecutiva' => $validados['FechaEjecutiva'],
+            'Estado' => 'Ejecutiva',
+        ]);
+
+        return redirect('terceros/' . $tercero->Id)->with('success', 'Fecha de ejecutiva añadida correctamente');
     }
 }

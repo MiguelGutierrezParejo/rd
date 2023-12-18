@@ -7,14 +7,10 @@
                     <a href="{{route('terceros.edit', ['id' => $tercero->Id])}}"
                         style="border-color:#0053D0; background-color: #0053D0"
                         class="text-white bg-blue-700 font-semibold rounded-lg text-sm px-5 py-1 mr-2 text-center">Editar</a>
-                    <form action="/rd/public/terceros/delete/{{$tercero->Id}}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button onclick="return confirm('¿Estás seguro de borrar este registro?')" type="submit"
-                            style="border-color:#7b241c; background-color: #7b241c"
-                            class="text-white bg-blue-700 font-semibold rounded-lg text-sm px-5 py-1 mr-2 text-center">Borrar
-                        </button>
-                    </form>
+                    <a href="{{route('terceros.fechaejecutiva', ['id' => $tercero->Id])}}"
+                        class="text-white bg-green-700 font-semibold rounded-lg text-sm px-5 py-1 mr-2 text-center">Ejecutiva</a>
+                    <a href="{{route('terceros.fechaanular', ['id' => $tercero->Id])}}"
+                        class="text-white bg-red-700 font-semibold rounded-lg text-sm px-5 py-1 mr-2 text-center">Anular</a>
                 </div>
             </div>
         </div>
@@ -49,7 +45,7 @@
             </h3>
         </div>
         @if ($tercero->FechaPagado != null || $tercero->FechaEjecutiva != null || $tercero->FechaNotificacion != null || $tercero->FechaAnulacion != null)
-            <div class="flex justify-between items-center" style="margin-bottom: -0.5rem;">
+            <div class="flex items-center" style="margin-bottom: -0.5rem; gap: 2rem;">
 
                 @if ($tercero->FechaPagado != null)
                     <h3 class="border-t mb-2 pt-3 font-semibold">Fecha Pagado:

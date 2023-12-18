@@ -137,7 +137,7 @@ class PagosController extends Controller
         Tercero::where('RD', $validados['IdRd'])->update(['Total' => $Total]);
 
         if ($Total == 0) {
-            Tercero::where('RD', $validados['IdRd'])->update(['FechaPagado' => new DateTime(), 'Estado' => 'Pagado']);
+            Tercero::where('RD', $validados['IdRd'])->update(['FechaPagado' => $validados['Fecha'], 'Estado' => 'Pagado']);
         } else {
             Tercero::where('RD', $validados['IdRd'])->update(['FechaPagado' => null, 'Estado' => 'Pendiente']);
         }
