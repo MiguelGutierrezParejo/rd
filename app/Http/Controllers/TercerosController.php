@@ -147,7 +147,7 @@ class TercerosController extends Controller
         $nuevoTotal = $validados['Importe'] - $totalPagos;
 
         Tercero::where('id', $id)->update(['Total' => $nuevoTotal]);
-        
+
         return redirect('terceros/'. $tercero->Id)->with('success', 'Registro editado con éxito.');
     }
 
@@ -169,6 +169,7 @@ class TercerosController extends Controller
         ->where('id', $id)
         ->update([
             'FechaAnulacion' => $validados['FechaAnulacion'],
+            'Motivo' => $validados['Motivo'],
             'Estado' => 'Anulado',
         ]);
 
@@ -193,6 +194,7 @@ class TercerosController extends Controller
         ->where('id', $id)
         ->update([
             'FechaEjecutiva' => $validados['FechaEjecutiva'],
+            'Motivo' => $validados['Motivo'],
             'Estado' => 'Ejecutiva',
         ]);
 

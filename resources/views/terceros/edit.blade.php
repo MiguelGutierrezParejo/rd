@@ -21,11 +21,7 @@
                     @enderror
                 </div>
                 <div class="mb-6">
-                    <label for="RD"
-                        class="text-sm font-medium text-gray-900 block mb-2 @error('RD') text-red-500 @enderror">
-                        RD
-                    </label>
-                    <input type="text" name="RD" id="RD"
+                    <input type="hidden" name="RD" id="RD"
                         class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-300 p-2.5 @error('RD') border-red-500 @enderror"
                         value="{{ old('RD', $tercero->RD) }}">
                     @error('Modelo')

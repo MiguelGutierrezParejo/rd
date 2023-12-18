@@ -77,9 +77,15 @@
                 @endif
             </div>
         @endif
-        <h3 class="border-t mb-2 pt-3 font-semibold">Motivo:
-            <span class="font-thin"> {{ $tercero->Motivo }}</span>
-        </h3>
+        @if ($tercero->FechaAnulacion != null)
+            <h3 class="border-t mb-2 pt-3 font-semibold">Motivo de la anulación:
+                <span class="font-thin"> {{ $tercero->Motivo }}</span>
+            </h3>
+        @elseif ( $tercero->FechaEjecutiva != null)
+            <h3 class="border-t mb-2 pt-3 font-semibold">Motivo:
+                <span class="font-thin"> {{ $tercero->Motivo }}</span>
+            </h3>
+        @endif
         <h3 class="border-t mb-2 pt-3 font-semibold">Observaciones:
             <span class="font-thin"> {{ $tercero->Texto }}</span>
         </h3>
