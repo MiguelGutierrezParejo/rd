@@ -39,19 +39,17 @@
             @php
                 function estadoColor($estado) {
                     switch ($estado) {
-                        case 'Pendiente':
-                            return '#DBD9D9'; // Clase para el fondo gris
                         case 'Anulado':
-                            return '#b91c1c'; // Clase para el fondo rojo
+                            return '#b91c1c'; // Clase para el color rojo
                         case 'Pagado':
-                            return '#8bff4d'; // Clase para el fondo verde
+                            return '#15803d'; // Clase para el color verde
                         case 'Ejecutiva':
-                            return '#42d5e7'; // Clase para el fondo azul
+                            return '#0057da'; // Clase para el color azul
                     }
                 }
             @endphp
-            <h3 class="mb-2 pt-3 font-semibold" style="padding:10px; background-color:{{ estadoColor($tercero->Estado) }}">
-                Estado: <span class="font-thin">{{ $tercero->Estado }}</span>
+            <h3 class="mb-2 pt-3 font-semibold" style="padding:10px; background-color:#DBD9D9">
+                Estado: <span class="font-thin" style="color: {{ estadoColor($tercero->Estado)}}">{{ $tercero->Estado }}</span>
             </h3>
         </div>
         <div class="border-t flex items-center" style="gap: 2rem; margin-bottom: -0.5rem;">

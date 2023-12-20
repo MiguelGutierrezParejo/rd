@@ -126,6 +126,18 @@
                             <div class="hidden"><button type="submit"></button></div>
                         </form>
                     </tr>
+                    @php
+                function estadoColor($estado) {
+                    switch ($estado) {
+                        case 'Anulado':
+                            return '#b91c1c'; // Clase para el color rojo
+                        case 'Pagado':
+                            return '#15803d'; // Clase para el color verde
+                        case 'Ejecutiva':
+                            return '#0057da'; // Clase para el color azul
+                    }
+                }
+            @endphp
                     @foreach ($terceros as $tercero)
 
                         <tr class="border border-slate-400">
@@ -150,7 +162,7 @@
                                 </div>
                             </td>
                             <td class="border border-slate-300 px-6 py-4" align="center">
-                                <div class="text-sm text-gray-900">
+                                <div class="text-sm text-gray-900" style="color: {{estadoColor($tercero->Estado)}}">
                                     {{$tercero->Estado}}
                                 </div>
                             </td>
