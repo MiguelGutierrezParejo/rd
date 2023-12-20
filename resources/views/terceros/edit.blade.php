@@ -4,32 +4,22 @@
         @method('PUT')
 
         <h1 class="mb-4 text-2xl font-semibold">Editar registro</h1>
+        <div class="mb-6">
+            <label for="Nombre"
+                class="text-sm font-medium text-gray-900 block mb-2 @error('Nombre') text-red-500 @enderror">
+                Nombre
+            </label>
+            <input type="text" name="Nombre" id="Nombre" style="width: 500px"
+                class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 @error('Nombre') border-red-500 @enderror"
+                value="{{ old('Nombre', $tercero->Nombre) }}">
+            @error('Nombre')
+                <p class="text-red-500 text-sm mt-1">
+                    {{ $message }}
+                </p>
+            @enderror
+        </div>
         <div class="flex">
             <div>
-                <div class="mb-6">
-                    <label for="Nombre"
-                        class="text-sm font-medium text-gray-900 block mb-2 @error('Nombre') text-red-500 @enderror">
-                        Nombre
-                    </label>
-                    <input type="text" name="Nombre" id="Nombre" style="width: 300px"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 @error('Nombre') border-red-500 @enderror"
-                        value="{{ old('Nombre', $tercero->Nombre) }}">
-                    @error('Nombre')
-                        <p class="text-red-500 text-sm mt-1">
-                            {{ $message }}
-                        </p>
-                    @enderror
-                </div>
-                <div class="mb-6">
-                    <input type="hidden" name="RD" id="RD"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-300 p-2.5 @error('RD') border-red-500 @enderror"
-                        value="{{ old('RD', $tercero->RD) }}">
-                    @error('Modelo')
-                        <p class="text-red-500 text-sm mt-1">
-                            {{ $message }}
-                        </p>
-                    @enderror
-                </div>
                 <div class="mb-6">
                     <label for="Expediente"
                         class="text-sm font-medium text-gray-900 block mb-2 @error('Expediente') text-red-500 @enderror">
@@ -93,11 +83,21 @@
         <div class="mb-6">
             <label for="Texto"
                 class="text-sm font-medium text-gray-900 block mb-2 @error('Texto') text-red-500 @enderror">
-                Observaciones
+                Concepto
             </label>
             <input type="text" name="Texto" id="Texto"
                 class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('Texto') border-red-500 @enderror"
                 value="{{ old('Texto', $tercero->Texto) }}">
+            @error('Modelo')
+                <p class="text-red-500 text-sm mt-1">
+                    {{ $message }}
+                </p>
+            @enderror
+        </div>
+        <div class="mb-6">
+            <input type="hidden" name="RD" id="RD"
+                class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-300 p-2.5 @error('RD') border-red-500 @enderror"
+                value="{{ old('RD', $tercero->RD) }}">
             @error('Modelo')
                 <p class="text-red-500 text-sm mt-1">
                     {{ $message }}

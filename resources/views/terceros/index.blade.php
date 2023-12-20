@@ -7,7 +7,7 @@
                     class="text-white font-semibold rounded-lg text-sm px-5 py-1 text-center">Limpiar filtro
                 </a>
                 &nbsp; | &nbsp;
-                <a href="/rd/public/terceros/create" style="background-color: #0053D0"
+                <a href="/rd/public/terceros/create" style="background-color: #15803d"
                     class="text-white font-semibold rounded-lg text-sm px-5 py-1 text-center">Nuevo Registro
                 </a>
             </div>

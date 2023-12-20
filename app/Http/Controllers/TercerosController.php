@@ -105,7 +105,6 @@ class TercerosController extends Controller
         $tercero->Texto = $validados['Texto'];
         $tercero->Estado = 'Pendiente';
         $tercero->Total = $importeFormateado;
-        $tercero->Motivo = $validados['Motivo'];
         $tercero->FechaPagado = null;
         $tercero->FechaEjecutiva = null;
         $tercero->FechaAnulacion = null;
