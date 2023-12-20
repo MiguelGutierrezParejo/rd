@@ -48,10 +48,10 @@
         </div>
         <div class="border-t flex items-center" style="margin-bottom: -0.5rem; gap: 2rem;">
             <h3 class="mb-2 pt-3 font-semibold">IMPORTE:
-                <span class="font-semibold" style="color: green"> {{ $tercero->Importe }} €</span>
+                <span class="font-semibold" style="color: green"> {{ number_format($tercero->Importe, 2, ',', '.') }}€</span>
             </h3>
             <h3 class="mb-2 pt-3 font-semibold">PENDIENTE:
-                <span class="font-semibold" style="color: red">{{ $tercero->Total }} €</span>
+                <span class="font-semibold" style="color: red">{{ number_format($tercero->Total, 2, ',', '.') }}€</span>
             </h3>
         </div>
         @if ($tercero->FechaPagado != null || $tercero->FechaEjecutiva != null || $tercero->FechaNotificacion != null || $tercero->FechaAnulacion != null)

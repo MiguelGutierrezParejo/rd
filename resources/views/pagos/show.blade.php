@@ -30,7 +30,7 @@
             <span class="font-thin">{{ $pago->IdRd }}</span>
         </h3>
         <h3 class="border-t mb-2 pt-3 font-semibold">Importe:
-            <span class="font-thin"> {{ $pago->Importe }}</span>
+            <span class="font-thin"> {{ number_format($pago->Importe, 2, ',', '.') }}€</span>
         </h3>
         <h3 class="border-t mb-2 pt-3 font-semibold">Fecha:
             <span class="font-thin">  {{date('d-m-Y', strtotime($pago->Fecha))}}</span>

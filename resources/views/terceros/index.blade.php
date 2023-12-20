@@ -19,10 +19,22 @@
                     @endphp
 
                     <tr>
-                        <th class="border border-slate-300 px-6 py-2 font-semibold">
+                        <th class="border border-slate-300 px-6 py-2 font-semibold" style="width: 500px">
                             <a
                                 href="{!! $enlace !!}?orden=Nombre&dir={{ request('dir') == 'asc' ? 'desc' : 'asc' }}&{!! $link !!}">Nombre
                                 @if (request('orden') == 'Nombre')
+                                    @if (request('dir', 'asc') == 'asc')
+                                        &darr;
+                                    @else
+                                        &uarr;
+                                    @endif
+                                @endif
+                            </a>
+                        </th>
+                        <th class="border border-slate-300 px-6 py-2 font-semibold">
+                            <a
+                                href="{!! $enlace !!}?orden=RD&dir={{ request('dir') == 'asc' ? 'desc' : 'asc' }}&{!! $link !!}">RD
+                                @if (request('orden') == 'RD')
                                     @if (request('dir', 'asc') == 'asc')
                                         &darr;
                                     @else
@@ -67,18 +79,7 @@
                                 @endif
                             </a>
                         </th>
-                        <th class="border border-slate-300 px-6 py-2 font-semibold">
-                            <a
-                                href="{!! $enlace !!}?orden=RD&dir={{ request('dir') == 'asc' ? 'desc' : 'asc' }}&{!! $link !!}">RD
-                                @if (request('orden') == 'RD')
-                                    @if (request('dir', 'asc') == 'asc')
-                                        &darr;
-                                    @else
-                                        &uarr;
-                                    @endif
-                                @endif
-                            </a>
-                        </th>
+
                     </tr>
                 </thead>
                 <tbody class="bg-white">
@@ -86,25 +87,25 @@
                         <form action="{{ $enlace }}" method="GET">
                             <input type="hidden" name="orden" value="{{ old('orden') }}">
                             <input type="hidden" name="dir" value="{{ old('dir') }}">
-                            <td class="w-3/12 border border-slate-300 px-6 py-2 font-semibold">
-                                <input type="text" class="border border-slate-300 px-6 py-2"
+                            <td class="border border-slate-300 px-6 py-2 font-semibold">
+                                <input type="text" class="border border-slate-300" style="width: 350px"
                                 name="Nombre" id="Nombre" value="{{ request()->query('Nombre') }}">
                             </td>
-                            <td class="w-2/12 border border-slate-300 px-6 py-2 font-semibold">
-                                <input type="text" class="border border-slate-300 px-6 py-2"
+                            <td class="border border-slate-300 px-6 py-2 font-semibold">
+                                <input type="text" class="border border-slate-300 px-6 py-2" style="width: 150px"
+                                    name="RD" id="RD" value="{{ request()->query('RD') }}">
+                            </td>
+                            <td class="border border-slate-300 px-6 py-2 font-semibold">
+                                <input type="text" class="border border-slate-300" style="width: 150px"
                                 name="DNI" id="DNI" value="{{ request()->query('DNI') }}">
                             </td>
-                            <td class="w-1/12 border border-slate-300 px-6 py-2 font-semibold">
-                                <input type="text" class="border border-slate-300 px-6 py-2"
+                            <td class="border border-slate-300 px-6 py-2 font-semibold">
+                                <input type="text" class="border border-slate-300 px-6 py-2" style="width: 150px"
                                 name="Expediente" id="Expediente" value="{{ request()->query('Expediente') }}">
                             </td>
-                            <td class="w-2/12 border border-slate-300 px-6 py-2 font-semibold">
-                                <input type="text" class="border border-slate-300 px-6 py-2"
+                            <td class="border border-slate-300 px-6 py-2 font-semibold">
+                                <input type="text" class="border border-slate-300 px-6 py-2" style="width: 150px"
                                 name="Importe" id="Importe" value="{{ request()->query('Importe') }}">
-                            </td>
-                            <td class="w-2/12 border border-slate-300 px-6 py-2 font-semibold">
-                                <input type="text" class="border border-slate-300 px-6 py-2"
-                                    name="RD" id="RD" value="{{ request()->query('RD') }}">
                             </td>
                             <div class="hidden"><button type="submit"></button></div>
                         </form>
@@ -117,24 +118,24 @@
                                    <a href="{{ route('terceros.show', ['id' => $tercero->Id]) }}">{{$tercero->Nombre}}</a>
                                 </div>
                             </td>
-                            <td class="border border-slate-300 px-6 py-4">
+                            <td class="border border-slate-300 px-6 py-4" style="width: 150px" align="center">
+                                <div class="text-sm text-gray-900" style="width: 150px">
+                                    {{$tercero->RD}}
+                                </div>
+                            </td>
+                            <td class="border border-slate-300 px-6 py-4" align="center">
                                 <div class="text-sm text-gray-900">
                                     {{$tercero->DNI}}
                                 </div>
                             </td>
-                            <td class="border border-slate-300 px-6 py-4">
+                            <td class="border border-slate-300 px-6 py-4" align="center">
                                 <div class="text-sm text-gray-900">
                                     {{$tercero->Expediente}}
                                 </div>
                             </td>
-                            <td class="border border-slate-300 px-6 py-4">
+                            <td class="border border-slate-300 px-6 py-4" align="right">
                                 <div class="text-sm text-gray-900">
-                                    {{$tercero->Importe}}
-                                </div>
-                            </td>
-                            <td class="border border-slate-300 px-6 py-4">
-                                <div class="text-sm text-gray-900">
-                                    {{$tercero->RD}}
+                                    {{ number_format($tercero->Importe, 2, ',', '.') }}€
                                 </div>
                             </td>
                         </tr>
