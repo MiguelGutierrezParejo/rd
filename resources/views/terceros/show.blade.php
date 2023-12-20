@@ -70,9 +70,18 @@
             <h3 class="mb-2 pt-3 font-semibold">IMPORTE:
                 <span class="font-semibold" style="color: green"> {{ number_format($tercero->Importe, 2, ',', '.') }}€</span>
             </h3>
-            <h3 class="mb-2 pt-3 font-semibold">PENDIENTE:
-                <span class="font-semibold" style="color: red">{{ number_format($tercero->Total, 2, ',', '.') }}€</span>
-            </h3>
+            @if ($tercero->Estado == 'Pagado')
+                @php
+                   // $total = DB::table('terceros')->where('id', $terceros->Id)->update(['Total' => 0,]);
+                @endphp
+                <h3 class="mb-2 pt-3 font-semibold">PENDIENTE:
+                    <span class="font-semibold" style="color: red">{{ number_format($tercero->Total, 2, ',', '.') }}€</span>
+                </h3>
+            @else
+                <h3 class="mb-2 pt-3 font-semibold">PENDIENTE:
+                    <span class="font-semibold" style="color: red">{{ number_format($tercero->Total, 2, ',', '.') }}€</span>
+                </h3>
+            @endif
         </div>
         @if ($tercero->FechaPagado != null || $tercero->FechaEjecutiva != null || $tercero->FechaNotificacion != null || $tercero->FechaAnulacion != null)
             <div class="flex items-center" style="margin-bottom: -0.5rem; gap: 2rem;">
