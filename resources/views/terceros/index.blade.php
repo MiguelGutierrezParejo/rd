@@ -14,7 +14,7 @@
             <table width="100%" class="table-fixed border-collapse border border-slate-400 text-left">
                 <thead class="bg-gray-100">
                     @php
-                        $link = e('Nombre=' . request('Nombre') . '&DNI=' . request('DNI') . '&Expediente=' . request('Expediente') . '&Importe=' . request('Importe') . '&RD=' . request('RD'));
+                        $link = e('Nombre=' . request('Nombre') . '&DNI=' . request('DNI') . '&Expediente=' . request('Expediente') . '&Estado=' . request('Estado') . '&Importe=' . request('Importe') . '&RD=' . request('RD'));
                         $enlace = e('/rd/public/terceros')
                     @endphp
 
@@ -69,6 +69,18 @@
                         </th>
                         <th class="border border-slate-300 px-6 py-2 font-semibold">
                             <a
+                                href="{!! $enlace !!}?orden=Estado&dir={{ request('dir') == 'asc' ? 'desc' : 'asc' }}&{!! $link !!}">Estado
+                                @if (request('orden') == 'Estado')
+                                    @if (request('dir', 'asc') == 'asc')
+                                        &darr;
+                                    @else
+                                        &uarr;
+                                    @endif
+                                @endif
+                            </a>
+                        </th>
+                        <th class="border border-slate-300 px-6 py-2 font-semibold">
+                            <a
                                 href="{!! $enlace !!}?orden=Importe&dir={{ request('dir') == 'asc' ? 'desc' : 'asc' }}&{!! $link !!}">Importe
                                 @if (request('orden') == 'Importe')
                                     @if (request('dir', 'asc') == 'asc')
@@ -105,6 +117,10 @@
                             </td>
                             <td class="border border-slate-300 px-6 py-2 font-semibold">
                                 <input type="text" class="border border-slate-300 px-6 py-2" style="width: 150px"
+                                name="Estado" id="Estado" value="{{ request()->query('Estado') }}">
+                            </td>
+                            <td class="border border-slate-300 px-6 py-2 font-semibold">
+                                <input type="text" class="border border-slate-300 px-6 py-2" style="width: 150px"
                                 name="Importe" id="Importe" value="{{ request()->query('Importe') }}">
                             </td>
                             <div class="hidden"><button type="submit"></button></div>
@@ -131,6 +147,11 @@
                             <td class="border border-slate-300 px-6 py-4" align="center">
                                 <div class="text-sm text-gray-900">
                                     {{$tercero->Expediente}}
+                                </div>
+                            </td>
+                            <td class="border border-slate-300 px-6 py-4" align="center">
+                                <div class="text-sm text-gray-900">
+                                    {{$tercero->Estado}}
                                 </div>
                             </td>
                             <td class="border border-slate-300 px-6 py-4" align="right">

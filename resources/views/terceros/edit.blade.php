@@ -31,20 +31,6 @@
                     @enderror
                 </div>
                 <div class="mb-6">
-                    <label for="DNI"
-                        class="text-sm font-medium text-gray-900 block mb-2 @error('DNI') text-red-500 @enderror">
-                        DNI
-                    </label>
-                    <input type="text" name="DNI" id="DNI"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-300 p-2.5 @error('DNI') border-red-500 @enderror"
-                        value="{{ old('DNI', $tercero->DNI) }}">
-                    @error('DNI')
-                        <p class="text-red-500 text-sm mt-1">
-                            {{ $message }}
-                        </p>
-                    @enderror
-                </div>
-                <div class="mb-6">
                     <label for="Expediente"
                         class="text-sm font-medium text-gray-900 block mb-2 @error('Expediente') text-red-500 @enderror">
                         Número de Expediente
@@ -72,34 +58,22 @@
                         </p>
                     @enderror
                 </div>
-                <div class="mb-6">
-                    <label for="Estado"
-                        class="text-sm font-medium text-gray-900 block mb-2 @error('Estado') text-red-500 @enderror">
-                        Estado
-                    </label>
-                    <select name="Estado" id="Estado" style="width: 110px"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 @error('Estado') border-red-500 @enderror">
-                        <option value="Pendiente" {{ old('Estado', $tercero->Estado) === 'Pendiente' ? 'selected' : '' }}>
-                            Pendiente
-                        </option>
-                        <option value="Pagado" {{ old('Estado', $tercero->Estado) === 'Pagado' ? 'selected' : '' }}>
-                            Pagado
-                        </option>
-                        <option value="Ejecutiva" {{ old('Estado', $tercero->Estado) === 'Ejecutiva' ? 'selected' : '' }}>
-                            Ejecutiva
-                        </option>
-                        <option value="Anulado" {{ old('Estado', $tercero->Estado) === 'Anulado' ? 'selected' : '' }}>
-                            Anulado
-                        </option>
-                    </select>
-                    @error('Estado')
-                    <p class="text-red-500 text-sm mt-1">
-                        {{ $message }}
-                    </p>
-                    @enderror
-                </div>
             </div>
             <div style="margin-left: 5%">
+                <div class="mb-6">
+                    <label for="DNI"
+                        class="text-sm font-medium text-gray-900 block mb-2 @error('DNI') text-red-500 @enderror">
+                        DNI
+                    </label>
+                    <input type="text" name="DNI" id="DNI"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-300 p-2.5 @error('DNI') border-red-500 @enderror"
+                        value="{{ old('DNI', $tercero->DNI) }}">
+                    @error('DNI')
+                        <p class="text-red-500 text-sm mt-1">
+                            {{ $message }}
+                        </p>
+                    @enderror
+                </div>
                 <div class="mb-6">
                     <label for="Fecha"
                         class="text-sm font-medium text-gray-900 block mb-2 @error('Fecha') text-red-500 @enderror">
@@ -109,48 +83,6 @@
                         class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/3 p-2.5 @error('Fecha') border-red-500 @enderror"
                         value="{{ old('Fecha', optional($tercero->Fecha)->format('Y-m-d')) }}">
                     @error('tercero')
-                        <p class="text-red-500 text-sm mt-1">
-                            {{ $message }}
-                        </p>
-                    @enderror
-                </div>
-                <div class="mb-6">
-                    <label for="FechaPagado"
-                        class="text-sm font-medium text-gray-900 block mb-2 @error('FechaPagado') text-red-500 @enderror">
-                        Fecha pagado
-                    </label>
-                    <input type="date" name="FechaPagado" id="FechaPagado"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/3 p-2.5 @error('FechaPagado') border-red-500 @enderror"
-                        value="{{ old('FechaPagado', optional($tercero->FechaPagado)->format('Y-m-d')) }}">
-                    @error('Modelo')
-                        <p class="text-red-500 text-sm mt-1">
-                            {{ $message }}
-                        </p>
-                    @enderror
-                </div>
-                <div class="mb-6">
-                    <label for="FechaEjecutiva"
-                        class="text-sm font-medium text-gray-900 block mb-2 @error('FechaEjecutiva') text-red-500 @enderror">
-                        Fecha ejecutiva
-                    </label>
-                    <input type="date" name="FechaEjecutiva" id="FechaEjecutiva"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/3 p-2.5 @error('FechaEjecutiva') border-red-500 @enderror"
-                        value="{{ old('FechaEjecutiva', optional($tercero->FechaEjecutiva)->format('Y-m-d')) }}">
-                    @error('Modelo')
-                        <p class="text-red-500 text-sm mt-1">
-                            {{ $message }}
-                        </p>
-                    @enderror
-                </div>
-                <div class="mb-6">
-                    <label for="FechaNotificacion"
-                        class="text-sm font-medium text-gray-900 block mb-2 @error('FechaNotificacion') text-red-500 @enderror">
-                        Fecha de notificacion
-                    </label>
-                    <input type="date" name="FechaNotificacion" id="FechaNotificacion"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/3 p-2.5 @error('FechaNotificacion') border-red-500 @enderror"
-                        value="{{ old('FechaNotificacion', optional($tercero->FechaNotificacion)->format('Y-m-d')) }}">
-                    @error('Modelo')
                         <p class="text-red-500 text-sm mt-1">
                             {{ $message }}
                         </p>
@@ -172,6 +104,13 @@
                 </p>
             @enderror
         </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var importeInput = document.getElementById('Importe');
+                new AutoNumeric('#Importe', 'Spanish');
+            });
+        </script>
 
         <button type="submit"
             class="text-white bg-green-700 hover:bg-green-700 focus:ring-4 focus:ring-green-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Aceptar</button>

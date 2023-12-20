@@ -48,6 +48,13 @@
         </div>
         <input type="hidden" name="IdRd" id="IdRd" value="{{ $IdRd }}">
 
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var importeInput = document.getElementById('Importe');
+                new AutoNumeric('#Importe', 'Spanish');
+            });
+        </script>
+
         <button type="submit"
             class="text-white bg-green-700 hover:bg-green-700 focus:ring-4 focus:ring-green-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Aceptar</button>
         <a href="{{url()->previous()}}" style="border-color:#0053D0; background-color: #0053D0"

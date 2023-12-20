@@ -48,6 +48,13 @@
             @enderror
         </div>
 
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var importeInput = document.getElementById('Importe');
+                new AutoNumeric('#Importe', 'Spanish');
+            });
+        </script>
+
         <button type="submit"
             class="text-white bg-green-700 hover:bg-green-700 focus:ring-4 focus:ring-green-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Aceptar</button>
         <a href="/rd/public/pagos/{{ $pago->Id }}" style="border-color:#0053D0; background-color: #0053D0"

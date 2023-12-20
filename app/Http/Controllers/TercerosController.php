@@ -13,7 +13,7 @@ class TercerosController extends Controller
 {
     public function index()
     {
-        $ordenes = ['Nombre', 'DNI', 'Expediente', 'Importe', 'RD'];
+        $ordenes = ['Nombre', 'DNI', 'Expediente', 'Estado', 'Importe', 'RD'];
         $orden = request()->query('orden') ?: 'RD';
         abort_unless(in_array($orden, $ordenes), 404);
 
@@ -21,6 +21,7 @@ class TercerosController extends Controller
             'Nombre' => request('Nombre'),
             'DNI' => request('DNI'),
             'Expediente' => request('Expediente'),
+            'Estado' => request('Estado'),
             'Importe' => request('Importe'),
             'RD' => request('RD'),
         ];
@@ -30,6 +31,7 @@ class TercerosController extends Controller
             ->where('Nombre', 'LIKE', '%' . request('Nombre') . '%')
             ->where('DNI', 'LIKE', '%' . request('DNI') . '%')
             ->where('Expediente', 'LIKE', '%' . request('Expediente') . '%')
+            ->where('Estado', 'LIKE', '%' . request('Estado') . '%')
             ->where('Importe', 'LIKE', '%' . request('Importe') . '%')
             ->where('RD', 'LIKE', '%' . request('RD') . '%');
 
@@ -69,7 +71,6 @@ class TercerosController extends Controller
             'Total' => 'nullable',
             'FechaPagado' => 'nullable|date_format:Y-m-d',
             'FechaEjecutiva' => 'nullable|date_format:Y-m-d',
-            'FechaNotificacion' => 'nullable|date_format:Y-m-d',
             'Motivo' => 'nullable',
             'FechaAnulacion' => 'nullable|date_format:Y-m-d',
         ]);
@@ -95,22 +96,26 @@ class TercerosController extends Controller
         $tercero->Nombre = $validados['Nombre'];
         $tercero->DNI = $validados['DNI'];
         $tercero->Expediente = $validados['Expediente'];
-        $tercero->Importe = $validados['Importe'];
+
+        $importeFormateado = str_replace(['.', ',', '€'], ['', '.', ''], $validados['Importe']);
+        $importeFormateado = preg_replace('/[^\d.]/', '', $importeFormateado);
+
+        $tercero->Importe = $importeFormateado;
         $tercero->Fecha = new DateTime($validados['Fecha']);
         $tercero->Texto = $validados['Texto'];
-        $tercero->RD = $validados['RD'];
-        $tercero->Estado = $validados['Estado'];
-        $tercero->Total = $validados['Importe'];
-        $tercero->FechaPagado = new DateTime($validados['FechaPagado']);
-        $tercero->FechaEjecutiva = new DateTime($validados['FechaEjecutiva']);
-        $tercero->FechaNotificacion = new DateTime($validados['FechaNotificacion']);
+        //$tercero->RD = $validados['RD'];
+        $tercero->Estado = 'Pendiente';
+        $tercero->Total = $importeFormateado;
         $tercero->Motivo = $validados['Motivo'];
-        $tercero->FechaAnulacion = new DateTime($validados['FechaAnulacion']);
+        $tercero->FechaPagado = null;
+        $tercero->FechaEjecutiva = null;
+        $tercero->FechaAnulacion = null;
 
         $tercero->save();
 
         return redirect('/terceros')->with('success', 'Registro creado con éxito.');
     }
+
 
     public function edit($id)
     {
@@ -126,24 +131,23 @@ class TercerosController extends Controller
         $validados = $this->validar();
         $tercero = Tercero::findOrFail($id);
 
+        $importeFormateado = str_replace(['.', ',', '€'], ['', '.', ''], $validados['Importe']);
+        $importeFormateado = preg_replace('/[^\d.]/', '', $importeFormateado);
+
         DB::table('terceros')
         ->where('id', $id)
         ->update([
             'Nombre' => $validados['Nombre'],
             'DNI' => $validados['DNI'],
             'Expediente' => $validados['Expediente'],
-            'Importe' => $validados['Importe'],
+            'Importe' => $importeFormateado,
             'Fecha' => date('Y-m-d', strtotime($validados['Fecha'])),
             'Texto' => $validados['Texto'],
-            'RD' => $validados['RD'],
-            'Estado' => $validados['Estado'],
-            'FechaEjecutiva' => $validados['FechaEjecutiva'],
-            'FechaNotificacion' => $validados['FechaNotificacion'],
         ]);
 
         // Recalcula el campo Total de la misma manera que al actualizar pagos
         $totalPagos = DB::table('pagos')->where('IdRd', $validados['RD'])->sum('Importe');
-        $nuevoTotal = $validados['Importe'] - $totalPagos;
+        $nuevoTotal = $importeFormateado - $totalPagos;
 
         Tercero::where('id', $id)->update(['Total' => $nuevoTotal]);
 
@@ -220,5 +224,19 @@ class TercerosController extends Controller
         ]);
 
         return redirect('terceros/' . $tercero->Id)->with('success', 'Fecha de ejecutiva añadida correctamente');
+    }
+
+    public function noejecutiva($id)
+    {
+        $tercero = Tercero::findOrFail($id);
+
+        DB::table('terceros')
+        ->where('id', $id)
+        ->update([
+            'FechaEjecutiva' => null,
+            'Estado' => 'Pendiente',
+        ]);
+
+        return redirect('terceros/' . $tercero->Id)->with('success', 'Registro modificado correctamente');
     }
 }

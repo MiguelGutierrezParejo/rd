@@ -4,7 +4,7 @@
             <div class="flex justify-between items-center">
                 <strong class="text-2xl">Datos del registro</strong>
                 <div class="flex space-x-2">
-                    @if ($tercero->FechaAnulacion == null)
+                    @if ($tercero->FechaAnulacion == null && $tercero->FechaEjecutiva == null)
                         <a href="{{route('terceros.edit', ['id' => $tercero->Id])}}"
                             style="border-color:#0053D0; background-color: #0053D0"
                             class="text-white bg-blue-700 font-semibold rounded-lg text-sm px-5 py-1 mr-2 text-center">Editar</a>
@@ -12,13 +12,21 @@
                             class="text-white bg-green-700 font-semibold rounded-lg text-sm px-5 py-1 mr-2 text-center">Ejecutiva</a>
                         <a href="{{route('terceros.fechaanular', ['id' => $tercero->Id])}}"
                             class="text-white bg-red-700 font-semibold rounded-lg text-sm px-5 py-1 mr-2 text-center">Anular</a>
-                    @else
+                    @elseif ($tercero->FechaAnulacion != null)
                     <form action="{{route('terceros.reactivar', ['id' => $tercero->Id])}}" method="POST">
                         @csrf
                         @method('PUT')
                         <button type="submit" onclick="return confirm('¿Estás seguro de dar de alta este registro?')"
                             style="border-color:#7b241c; background-color: #b91c1c"
                             class="text-white bg-blue-700 font-semibold rounded-lg text-sm px-5 py-1 mr-2 text-center">Dar de alta</button>
+                        </form>
+                    @elseif ($tercero->FechaEjecutiva != null)
+                    <form action="{{route('terceros.noejecutiva', ['id' => $tercero->Id])}}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <button type="submit" onclick="return confirm('¿Estás seguro de eliminar de ejecutiva este registro?')"
+                            style="border-color:#15803d; background-color: #15803d"
+                            class="text-white bg-blue-700 font-semibold rounded-lg text-sm px-5 py-1 mr-2 text-center">Revertir</button>
                         </form>
                     @endif
                 </div>
@@ -28,8 +36,22 @@
             <h3 class="mb-2 pt-3 font-semibold" >Nombre:
                 <span class="font-thin" style="font-size: 22px">{{ $tercero->Nombre }}</span>
             </h3>
-            <h3 class="mb-2 pt-3 font-semibold" style="background-color: rgb(219, 217, 217); padding:10px">Estado:
-                <span class="font-thin"> {{ $tercero->Estado }}</span>
+            @php
+                function estadoColor($estado) {
+                    switch ($estado) {
+                        case 'Pendiente':
+                            return '#DBD9D9'; // Clase para el fondo gris
+                        case 'Anulado':
+                            return '#b91c1c'; // Clase para el fondo rojo
+                        case 'Pagado':
+                            return '#8bff4d'; // Clase para el fondo verde
+                        case 'Ejecutiva':
+                            return '#42d5e7'; // Clase para el fondo azul
+                    }
+                }
+            @endphp
+            <h3 class="mb-2 pt-3 font-semibold" style="padding:10px; background-color:{{ estadoColor($tercero->Estado) }}">
+                Estado: <span class="font-thin">{{ $tercero->Estado }}</span>
             </h3>
         </div>
         <div class="border-t flex items-center" style="gap: 2rem; margin-bottom: -0.5rem;">

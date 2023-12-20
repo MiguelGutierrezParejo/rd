@@ -19,7 +19,7 @@
             </div>
         </div>
         @php
-           $nombres = DB::select("SELECT terceros.Nombre FROM terceros WHERE terceros.RD = $pago->IdRd");
+           $nombres = DB::select("SELECT terceros.Nombre, terceros.Id FROM terceros WHERE terceros.RD = $pago->IdRd");
         @endphp
         <h3 class="mb-2 pt-3 font-semibold">Nombre:
             @foreach ( $nombres as $nombre )
@@ -43,7 +43,7 @@
     <br>
 
     <div class="flex justify-end space-x-2 pt-3">
-        <a href="/rd/public/pagos" style="background-color: #0053D0"
+        <a href="/rd/public/terceros/{{ $nombre->Id }}" style="background-color: #0053D0"
             class="transition-colors rounded-[8px] px-[15px] py-[4px] text-white focus:ring-2">Volver</a>
     </div>
 </x-layout>

@@ -82,9 +82,12 @@ class PagosController extends Controller
 
         $pago = new Pago();
 
+        $importeFormateado = str_replace(['.', ',', '€'], ['', '.', ''], $validados['Importe']);
+        $importeFormateado = preg_replace('/[^\d.]/', '', $importeFormateado);
+
         $pago->IdRd = $validados['IdRd'];
         $pago->Fecha = $validados['Fecha'];
-        $pago->Importe = $validados['Importe'];
+        $pago->Importe = $importeFormateado;
         $pago->Texto = $validados['Texto'];
 
         $pago->save();
@@ -119,27 +122,30 @@ class PagosController extends Controller
         $validados = $this->validar();
         $pago = Pago::findOrFail($id);
 
+        $importeFormateado = str_replace(['.', ',', '€'], ['', '.', ''], $validados['Importe']);
+        $importeFormateado = preg_replace('/[^\d.]/', '', $importeFormateado);
+
         DB::table('pagos')
         ->where('id', $id)
         ->update([
             'Fecha' => date('Y-m-d', strtotime($validados['Fecha'])),
-            'Importe' => $validados['Importe'],
+            'Importe' => $importeFormateado,
             'Texto' => $validados['Texto'],
         ]);
 
         // Buscar el Tercero asociado al pago
-        $tercero = Tercero::where('RD', $validados['IdRd'])->first();
+        $tercero = Tercero::where('RD', $pago->IdRd)->first();
 
         // Actualizar el campo Total en la tabla de terceros
-        $totalPagos = Pago::where('IdRd', $validados['IdRd'])->sum('Importe');
+        $totalPagos = Pago::where('IdRd', $tercero->RD)->sum('Importe');
         $Total = $tercero->Importe - $totalPagos;
 
-        Tercero::where('RD', $validados['IdRd'])->update(['Total' => $Total]);
+        Tercero::where('RD', $pago->IdRd)->update(['Total' => $Total]);
 
         if ($Total == 0) {
-            Tercero::where('RD', $validados['IdRd'])->update(['FechaPagado' => $validados['Fecha'], 'Estado' => 'Pagado']);
+            Tercero::where('RD', $pago->IdRd)->update(['FechaPagado' => $validados['Fecha'], 'Estado' => 'Pagado']);
         } else {
-            Tercero::where('RD', $validados['IdRd'])->update(['FechaPagado' => null, 'Estado' => 'Pendiente']);
+            Tercero::where('RD', $pago->IdRd)->update(['FechaPagado' => null, 'Estado' => 'Pendiente']);
         }
 
         return redirect('pagos/'. $pago->Id)->with('success', 'Pago editado con éxito.');
