@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Tercero;
 use DateTime;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -13,7 +14,7 @@ class TercerosController extends Controller
     public function index()
     {
         $ordenes = ['Nombre', 'DNI', 'Expediente', 'Importe', 'RD'];
-        $orden = request()->query('orden') ?: 'Nombre';
+        $orden = request()->query('orden') ?: 'RD';
         abort_unless(in_array($orden, $ordenes), 404);
 
         $searchParams = [
@@ -32,10 +33,10 @@ class TercerosController extends Controller
             ->where('Importe', 'LIKE', '%' . request('Importe') . '%')
             ->where('RD', 'LIKE', '%' . request('RD') . '%');
 
-        if (request('dir') == 'desc') {
-            $terceros->orderByDesc($orden);
-        } else {
+        if (request('dir') == 'asc') {
             $terceros->orderBy($orden);
+        } else {
+            $terceros->orderByDesc($orden);
         }
 
         $terceros = $terceros->paginate(20)->appends($searchParams);
