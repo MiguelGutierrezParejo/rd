@@ -12,7 +12,6 @@
     <link href="/rd/public/logoinformaticac.png" rel="icon" type="image/png">
     <link  href="{{ asset('css/lightbox.min.css') }}" rel="stylesheet">
     <script src="{{ asset('js/lightbox.min.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/gh/autoNumeric/autoNumeric@4.5.10/dist/autoNumeric.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/autonumeric@4.8.1"></script>
     <title>RD</title>
 </head>

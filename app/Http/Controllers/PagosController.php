@@ -82,8 +82,8 @@ class PagosController extends Controller
 
         $pago = new Pago();
 
-        $importeFormateado = str_replace(['.', ',', '€'], ['', '.', ''], $validados['Importe']);
-        $importeFormateado = preg_replace('/[^\d.]/', '', $importeFormateado);
+        $importeFormateado = $validados['Importe'] ? str_replace(['.', ',', '€'], ['', '.', ''], $validados['Importe']) : null;
+        $importeFormateado = $importeFormateado ? preg_replace('/[^\d.]/', '', $importeFormateado) : null;
 
         $pago->IdRd = $validados['IdRd'];
         $pago->Fecha = $validados['Fecha'];
@@ -122,8 +122,8 @@ class PagosController extends Controller
         $validados = $this->validar();
         $pago = Pago::findOrFail($id);
 
-        $importeFormateado = str_replace(['.', ',', '€'], ['', '.', ''], $validados['Importe']);
-        $importeFormateado = preg_replace('/[^\d.]/', '', $importeFormateado);
+        $importeFormateado = $validados['Importe'] ? str_replace(['.', ',', '€'], ['', '.', ''], $validados['Importe']) : null;
+        $importeFormateado = $importeFormateado ? preg_replace('/[^\d.]/', '', $importeFormateado) : null;
 
         DB::table('pagos')
         ->where('id', $id)

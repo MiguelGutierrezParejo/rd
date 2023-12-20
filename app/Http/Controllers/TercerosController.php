@@ -97,8 +97,8 @@ class TercerosController extends Controller
         $tercero->DNI = $validados['DNI'];
         $tercero->Expediente = $validados['Expediente'];
 
-        $importeFormateado = str_replace(['.', ',', '€'], ['', '.', ''], $validados['Importe']);
-        $importeFormateado = preg_replace('/[^\d.]/', '', $importeFormateado);
+        $importeFormateado = $validados['Importe'] ? str_replace(['.', ',', '€'], ['', '.', ''], $validados['Importe']) : null;
+        $importeFormateado = $importeFormateado ? preg_replace('/[^\d.]/', '', $importeFormateado) : null;
 
         $tercero->Importe = $importeFormateado;
         $tercero->Fecha = new DateTime($validados['Fecha']);
@@ -134,9 +134,8 @@ class TercerosController extends Controller
         $validados = $this->validar();
         $tercero = Tercero::findOrFail($id);
 
-        $importeFormateado = str_replace(['.', ',', '€'], ['', '.', ''], $validados['Importe']);
-        $importeFormateado = preg_replace('/[^\d.]/', '', $importeFormateado);
-
+        $importeFormateado = $validados['Importe'] ? str_replace(['.', ',', '€'], ['', '.', ''], $validados['Importe']) : null;
+    $importeFormateado = $importeFormateado ? preg_replace('/[^\d.]/', '', $importeFormateado) : null;
         DB::table('terceros')
         ->where('id', $id)
         ->update([
