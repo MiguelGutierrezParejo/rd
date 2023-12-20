@@ -103,13 +103,17 @@ class TercerosController extends Controller
         $tercero->Importe = $importeFormateado;
         $tercero->Fecha = new DateTime($validados['Fecha']);
         $tercero->Texto = $validados['Texto'];
-        //$tercero->RD = $validados['RD'];
         $tercero->Estado = 'Pendiente';
         $tercero->Total = $importeFormateado;
         $tercero->Motivo = $validados['Motivo'];
         $tercero->FechaPagado = null;
         $tercero->FechaEjecutiva = null;
         $tercero->FechaAnulacion = null;
+
+        // Crear RD
+        $año = $tercero->Fecha->format('Y');
+        $numeroRegistros = Tercero::whereYear('Fecha', $año)->count();
+        $tercero->RD = $año . str_pad($numeroRegistros + 1, 4, '0', STR_PAD_LEFT);
 
         $tercero->save();
 
