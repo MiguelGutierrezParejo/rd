@@ -1,4 +1,9 @@
 <x-layout>
+    <style>
+        #Contraseña {
+            -webkit-text-security: disc;
+        }
+    </style>
     <form action="{{ route('terceros.anular', ['id' => $tercero->Id]) }}" method="POST">
         @csrf
         @method('PUT')
@@ -21,25 +26,25 @@
         </div>
         <div class="mb-6">
             <label for="Contraseña"
+            class="text-sm font-medium text-gray-900 block mb-2 @error('Contraseña') text-red-500 @enderror">
+            Contraseña (de usuario)
+            </label>
+            <input type="text" name="Contraseña" id="Contraseña" style="width: 350px" autocomplete="off"
+                class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 @error('Contraseña') border-red-500 @enderror">
+            @error('Contraseña')
+            <p class="text-red-500 text-sm mt-1">
+                {{ $message }}
+            </p>
+            @enderror
+        </div>
+        <div class="mb-6">
+            <label for="Contraseña"
                 class="text-sm font-medium text-gray-900 block mb-2 @error('Motivo') text-red-500 @enderror">
                 Motivo
             </label>
             <input type="text" name="Motivo" id="Motivo"
                 class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('Motivo') border-red-500 @enderror">
             @error('Modelo')
-                <p class="text-red-500 text-sm mt-1">
-                    {{ $message }}
-                </p>
-            @enderror
-        </div>
-        <div class="mb-6">
-            <label for="Contraseña"
-                class="text-sm font-medium text-gray-900 block mb-2 @error('Contraseña') text-red-500 @enderror">
-                Contraseña (de usuario)
-            </label>
-            <input type="password" name="Contraseña" id="Contraseña" style="width: 350px"
-                class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 @error('Contraseña') border-red-500 @enderror">
-            @error('Contraseña')
                 <p class="text-red-500 text-sm mt-1">
                     {{ $message }}
                 </p>
