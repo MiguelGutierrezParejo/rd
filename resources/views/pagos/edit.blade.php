@@ -25,7 +25,8 @@
                     class="text-sm font-medium text-gray-900 block mb-2 @error('Compensado') text-red-500 @enderror">
                     Compensado
                 </label>
-                <input type="checkbox" name="Compensado" id="Compensado" {{ old('Compensado', $pago->Compensado) == 1 ? 'checked' : '' }}>
+                <input type="checkbox" name="Compensado" id="Compensado"
+                    {{ old('Compensado', $pago->Compensado) == 1 ? 'checked' : '' }}>
             </div>
         </div>
         <div class="mb-6">
@@ -49,8 +50,9 @@
             </label>
             <input type="text" name="Texto" id="Texto"
                 class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('Texto') border-red-500 @enderror"
-                value="{{ old('Texto', $pago->Texto) }}">
-            @error('Modelo')
+                value="{{ old('Texto', $pago->Texto) }}"
+                {{ old('Compensado', $pago->Compensado) == 1 ? 'readonly' : '' }}>
+            @error('Texto')
                 <p class="text-red-500 text-sm mt-1">
                     {{ $message }}
                 </p>
@@ -59,8 +61,33 @@
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {
+                var compensadoCheckbox = document.getElementById('Compensado');
+                var textoInput = document.getElementById('Texto');
                 var importeInput = document.getElementById('Importe');
-                new AutoNumeric('#Importe', 'Spanish');
+
+                // Función para actualizar el estado de la entrada de texto según el estado del checkbox
+                function actualizarEstadoTexto() {
+                    textoInput.readOnly = compensadoCheckbox.checked;
+
+                    // Si está marcado, inserta "Compensado" en el campo de texto
+                    if (compensadoCheckbox.checked) {
+                        textoInput.value = 'Compensado';
+                    } else {
+                        // Si no está marcado, limpia el campo de texto
+                        textoInput.value = '';
+                    }
+                }
+
+                // Llamada inicial para establecer el estado al cargar la página
+                actualizarEstadoTexto();
+
+                // Agregar un evento al cambio del checkbox
+                compensadoCheckbox.addEventListener('change', function() {
+                    actualizarEstadoTexto();
+                });
+
+                // Inicializar AutoNumeric para el campo de Importe
+                new AutoNumeric(importeInput, 'Spanish');
             });
         </script>
 

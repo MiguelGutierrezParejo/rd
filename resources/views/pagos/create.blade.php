@@ -47,7 +47,8 @@
             </label>
             <input type="text" name="Texto" id="Texto"
                 class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('Texto') border-red-500 @enderror"
-                value="{{ old('Texto', $pago->Texto) }}">
+                value="{{ old('Texto', $pago->Texto) }}"
+                {{ old('Compensado', $pago->Compensado) == 1 ? 'readonly' : '' }}>
             @error('Texto')
                 <p class="text-red-500 text-sm mt-1">
                     {{ $message }}
@@ -58,14 +59,40 @@
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {
+                var compensadoCheckbox = document.getElementById('Compensado');
+                var textoInput = document.getElementById('Texto');
                 var importeInput = document.getElementById('Importe');
-                new AutoNumeric('#Importe', 'Spanish');
+
+                // Función para actualizar el estado de la entrada de texto según el estado del checkbox
+                function actualizarEstadoTexto() {
+                    textoInput.readOnly = compensadoCheckbox.checked;
+
+                    // Si está marcado, inserta "Compensado" en el campo de texto
+                    if (compensadoCheckbox.checked) {
+                        textoInput.value = 'Compensado';
+                    } else {
+                        // Si no está marcado, limpia el campo de texto
+                        textoInput.value = '';
+                    }
+                }
+
+                // Llamada inicial para establecer el estado al cargar la página
+                actualizarEstadoTexto();
+
+                // Agregar un evento al cambio del checkbox
+                compensadoCheckbox.addEventListener('change', function() {
+                    actualizarEstadoTexto();
+                });
+
+                // Inicializar AutoNumeric para el campo de Importe
+                new AutoNumeric(importeInput, 'Spanish');
             });
         </script>
 
+
         <button type="submit"
             class="text-white bg-green-700 hover:bg-green-700 focus:ring-4 focus:ring-green-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Aceptar</button>
-        <a href="/rd/public/terceros/{{ $terceroId }}" style="border-color:#0053D0; background-color: #0053D0"
+        <a href="{{ route('terceros.show', $terceroId) }}" style="border-color:#0053D0; background-color: #0053D0"
             class="text-white border-green-700 border-2 bg-green-700 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Volver</a>
     </form>
 </x-layout>
