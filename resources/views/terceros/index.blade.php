@@ -18,7 +18,7 @@
                     @endphp
 
                     <tr>
-                        <th class="border border-slate-300 px-6 py-2 font-semibold" style="width: 500px">
+                        <th class="border border-slate-300 px-6 py-2 font-semibold" style="width: 500px" align="center">
                             <a
                                 href="{!! $enlace !!}?orden=Nombre&dir={{ request('dir') == 'asc' ? 'desc' : 'asc' }}&{!! $link !!}">Nombre
                                 @if (request('orden') == 'Nombre')
@@ -30,7 +30,7 @@
                                 @endif
                             </a>
                         </th>
-                        <th class="border border-slate-300 px-6 py-2 font-semibold">
+                        <th class="border border-slate-300 px-6 py-2 font-semibold" align="center">
                             <a
                                 href="{!! $enlace !!}?orden=RD&dir={{ request('dir') == 'asc' ? 'desc' : 'asc' }}&{!! $link !!}">RD
                                 @if (request('orden') == 'RD')
@@ -42,7 +42,7 @@
                                 @endif
                             </a>
                         </th>
-                        <th class="border border-slate-300 px-6 py-2 font-semibold">
+                        <th class="border border-slate-300 px-6 py-2 font-semibold" align="center">
                             <a
                                 href="{!! $enlace !!}?orden=DNI&dir={{ request('dir') == 'asc' ? 'desc' : 'asc' }}&{!! $link !!}">DNI
                                 @if (request('orden') == 'DNI')
@@ -54,7 +54,7 @@
                                 @endif
                             </a>
                         </th>
-                        <th class="border border-slate-300 px-6 py-2 font-semibold">
+                        <th class="border border-slate-300 px-6 py-2 font-semibold" align="center">
                             <a
                                 href="{!! $enlace !!}?orden=Expediente&dir={{ request('dir') == 'asc' ? 'desc' : 'asc' }}&{!! $link !!}">Expediente
                                 @if (request('orden') == 'Expediente')
@@ -66,7 +66,7 @@
                                 @endif
                             </a>
                         </th>
-                        <th class="border border-slate-300 px-6 py-2 font-semibold">
+                        <th class="border border-slate-300 px-6 py-2 font-semibold" align="center">
                             <a
                                 href="{!! $enlace !!}?orden=Estado&dir={{ request('dir') == 'asc' ? 'desc' : 'asc' }}&{!! $link !!}">Estado
                                 @if (request('orden') == 'Estado')
@@ -78,7 +78,7 @@
                                 @endif
                             </a>
                         </th>
-                        <th class="border border-slate-300 px-6 py-2 font-semibold">
+                        <th class="border border-slate-300 px-6 py-2 font-semibold" align="center">
                             <a
                                 href="{!! $enlace !!}?orden=Importe&dir={{ request('dir') == 'asc' ? 'desc' : 'asc' }}&{!! $link !!}">Importe
                                 @if (request('orden') == 'Importe')
@@ -90,7 +90,6 @@
                                 @endif
                             </a>
                         </th>
-
                     </tr>
                 </thead>
                 <tbody class="bg-white">
@@ -147,27 +146,33 @@
                             </td>
                             <td class="border border-slate-300 px-6 py-4" style="width: 150px" align="center">
                                 <div class="text-sm text-gray-900" style="width: 150px">
-                                    {{$tercero->RD}}
+                                    <a href="{{ route('terceros.show', ['id' => $tercero->Id]) }}">{{$tercero->RD}}</a>
                                 </div>
                             </td>
                             <td class="border border-slate-300 px-6 py-4" align="center">
                                 <div class="text-sm text-gray-900">
-                                    {{$tercero->DNI}}
+                                    <a href="{{ route('terceros.show', ['id' => $tercero->Id]) }}">{{$tercero->DNI}}</a>
                                 </div>
                             </td>
                             <td class="border border-slate-300 px-6 py-4" align="center">
                                 <div class="text-sm text-gray-900">
-                                    {{$tercero->Expediente}}
+                                    <a href="{{ route('terceros.show', ['id' => $tercero->Id]) }}">{{$tercero->Expediente}}</a>
                                 </div>
                             </td>
                             <td class="border border-slate-300 px-6 py-4" align="center">
                                 <div class="text-sm text-gray-900" style="color: {{estadoColor($tercero->Estado)}}">
-                                    <strong>{{$tercero->Estado}}</strong>
+                                    <a href="{{ route('terceros.show', ['id' => $tercero->Id]) }}">
+                                        @if ($tercero->Estado != 'Pendiente')
+                                            <strong>{{$tercero->Estado}}</strong>
+                                        @else
+                                            {{$tercero->Estado}}
+                                        @endif
+                                    </a>
                                 </div>
                             </td>
                             <td class="border border-slate-300 px-6 py-4" align="right">
                                 <div class="text-sm text-gray-900">
-                                    {{ number_format($tercero->Importe, 2, ',', '.') }}€
+                                    <a href="{{ route('terceros.show', ['id' => $tercero->Id]) }}">{{ number_format($tercero->Importe, 2, ',', '.') }}€</a>
                                 </div>
                             </td>
                         </tr>

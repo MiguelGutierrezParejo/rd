@@ -138,9 +138,9 @@
         <table class="table-fixed border border-gray-500 border-collapse mt-14">
             <thead>
                 <tr class="border-b-2 border-black">
-                    <th class="w-1/12 bg-gray-300 text-left px-2">Fecha</th>
-                    <th class="w-1/12 bg-gray-300 text-left px-2">Importe</th>
-                    <th class="w-4/12 bg-gray-300 text-left px-2">Observaciones</th>
+                    <th class="w-1/12 bg-gray-300 text-center px-2">Fecha</th>
+                    <th class="w-1/12 bg-gray-300 text-center px-2">Importe</th>
+                    <th class="w-4/12 bg-gray-300 text-center px-2">Observaciones</th>
                 </tr>
             </thead>
             @php
@@ -149,7 +149,7 @@
             <tbody>
                 @foreach ($pagos as $pago)
                     <tr class="border border-black">
-                        <td class="text-left px-2 border border-black">
+                        <td class="text-center px-2 border border-black">
                             <a href="{{ route('pagos.show', ['id' => $pago->Id]) }}">
                                 {{ date('d-m-Y', strtotime($pago->Fecha)) }}
                             </a>
