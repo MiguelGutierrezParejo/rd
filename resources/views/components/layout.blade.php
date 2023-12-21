@@ -28,6 +28,9 @@
                     <button class="px-3 py-1 rounded-sm items-center min-w-32">
                         <a class="pr-1 font-semibold" href="/rd/public/terceros">RD</a>
                     </button> |
+                    <button class="px-3 py-1 rounded-sm items-center min-w-32">
+                        <a class="pr-1 font-semibold" href="/rd/public/pagos/recabar">Listados</a>
+                    </button> |
                     <!-- Settings Dropdown -->
                     <div class="group inline-block">
                         <x-dropdown align="right" width="48">

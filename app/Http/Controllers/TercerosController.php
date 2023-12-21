@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Tercero;
+use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -55,6 +57,48 @@ class TercerosController extends Controller
         return view('terceros.show', [
             'tercero' => $tercero,
         ]);
+    }
+
+    public function recabar()
+    {
+       return view('terceros.recabar');
+    }
+
+    public function generar(Request $request)
+    {
+        if($request->Hasta == null) {
+            $request->Hasta = Carbon::now();
+        }
+
+        if($request->Desde == null) {
+            $request->Desde = '0000-00-00';
+        }
+
+        if ($request->Tipo != 'Todos'){
+
+            $terceros = Tercero::select('terceros.Nombre', 'terceros.RD', 'terceros.DNI', 'terceros.Importe', 'terceros.Expediente', 'pagos.Importe', 'pagos.Fecha', 'pagos.Compensado')
+                ->leftJoin('pagos', 'terceros.RD', '=', 'pagos.IdRd')
+                ->where('pagos.Fecha', '>=', $request->Desde)
+                ->where('pagos.Fecha', '<=', $request->Hasta)
+                ->where('Estado', $request->Estado)
+                ->orderBy('pagos.Fecha')
+                ->get();
+        } else {
+
+            $tercerostodos = Tercero::select('terceros.Nombre', 'terceros.RD', 'terceros.DNI', 'terceros.Importe', 'terceros.Expediente', 'pagos.Importe', 'pagos.Fecha', 'pagos.Compensado')
+            ->leftJoin('pagos', 'terceros.RD', '=', 'pagos.IdRd')
+            ->where('pagos.Fecha', '>=', $request->Desde)
+            ->where('pagos.Fecha', '<=', $request->Hasta)
+            ->where('Estado', '!=', 'Anulado')
+            ->get();
+        }
+
+        $pdf = Pdf::loadView('terceros.generar', [
+            'terceros' => $terceros,
+            //'tercerostodos' => $tercerostodos,
+            'request' => $request,
+        ])->setPaper('a4', 'landscape');
+        return $pdf->stream();
     }
 
     private function validar()

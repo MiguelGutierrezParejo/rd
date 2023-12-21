@@ -58,6 +58,12 @@ Route::get('/terceros/fechaanular/{id}', [TercerosController::class, 'fechaanula
 Route::put('/terceros/reactivar/{id}', [TercerosController::class, 'reactivar'])
     ->name('terceros.reactivar');
 
+Route::get('/pagos/recabar', [PagosController::class, 'recabar'])
+    ->name('pagos.recabar');
+    
+Route::post('/terceros/generar', [TercerosController::class, 'generar'])
+    ->name('terceros.generar');
+
 /////////////////////////////////////////////////////////////////PAGOS//////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Route::get('/pagos/create/{IdRd}', [PagosController::class, 'create'])

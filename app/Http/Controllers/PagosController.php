@@ -10,40 +10,6 @@ use Illuminate\Support\Facades\DB;
 
 class PagosController extends Controller
 {
-    public function index()
-    {
-        $ordenes = ['IdRd', 'Fecha', 'Importe', 'Nombre'];
-        $orden = request()->query('orden') ?: 'Nombre';
-        abort_unless(in_array($orden, $ordenes), 404);
-
-        $searchParams = [
-            'IdRd' => request('IdRd'),
-            'Fecha' => request('Fecha'),
-            'Importe' => request('Importe'),
-            'Nombre' => request('Nombre'),
-        ];
-
-        $pagos = DB::table('pagos')
-            ->leftJoin('terceros', 'terceros.RD', '=', 'pagos.IdRd')
-            ->select('pagos.*', 'terceros.Nombre')
-            ->where('Nombre', 'LIKE', '%'.request('Nombre').'%')
-            ->where('IdRd', 'LIKE', '%' . request('IdRd') . '%')
-            ->where('pagos.Fecha', 'LIKE', '%' . request('Fecha') . '%')
-            ->where('pagos.Importe', 'LIKE', '%' . request('Importe') . '%');
-
-        if (request('dir') == 'desc') {
-            $pagos->orderByDesc($orden);
-        } else {
-            $pagos->orderBy($orden);
-        }
-
-        $pagos = $pagos->paginate(20)->appends($searchParams);
-
-        return view('pagos.index', [
-            'pagos' => $pagos,
-        ]);
-    }
-
     public function show($id)
     {
         $pago = Pago::findOrFail($id);
@@ -77,6 +43,12 @@ class PagosController extends Controller
             'terceroId' => $tercero[0]->Id
         ]);
     }
+
+    public function recabar()
+    {
+       return view('terceros.recabar');
+    }
+
 
     public function store()
     {
