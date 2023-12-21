@@ -57,8 +57,9 @@ class PagosController extends Controller
     {
         $validados = request()->validate([
             'IdRd' => 'nullable',
-            'Fecha' => 'nullable|date_format:Y-m-d',
-            'Importe' => 'nullable',
+            'Fecha' => 'required|date_format:Y-m-d',
+            'Importe' => 'required',
+            'Compensado' => 'nullable',
             'Texto' => 'nullable|max:200',
         ]);
 
@@ -68,11 +69,12 @@ class PagosController extends Controller
     public function create($IdRd)
     {
         $pago = new Pago();
-        $IdRd = DB::select("SELECT terceros.RD FROM terceros WHERE terceros.RD = $IdRd");
+        $tercero = DB::select("SELECT terceros.RD, terceros.Id FROM terceros WHERE terceros.RD = $IdRd");
 
         return view('pagos.create', [
             'pago' => $pago,
-            'IdRd' => $IdRd[0]->RD,
+            'RD' => $tercero[0]->RD,
+            'terceroId' => $tercero[0]->Id
         ]);
     }
 
@@ -82,21 +84,40 @@ class PagosController extends Controller
 
         $pago = new Pago();
 
+        // Buscar el Tercero asociado al pago
+        $tercero = Tercero::where('RD', $validados['IdRd'])->first();
+
+        // Calcula el Total de la tabla terceros
+        $totalPagos = Pago::where('IdRd', $validados['IdRd'])->sum('Importe');
+        $totalNuevoPago = $validados['Importe'] ? floatval(str_replace(['.', ',', '€'], ['', '.', ''], $validados['Importe'])) : 0;
+
+        $saldoRestante = $tercero->Importe - ($totalPagos + $totalNuevoPago);
+
+        // Verifica si el nuevo pago supera el importe
+        if ($saldoRestante < 0) {
+            return redirect()->back()->withInput()->withErrors(['Importe' => 'La cantidad introducida supera el importe pendiente.']);
+        }
+
         $importeFormateado = $validados['Importe'] ? str_replace(['.', ',', '€'], ['', '.', ''], $validados['Importe']) : null;
         $importeFormateado = $importeFormateado ? preg_replace('/[^\d.]/', '', $importeFormateado) : null;
 
         $pago->IdRd = $validados['IdRd'];
         $pago->Fecha = $validados['Fecha'];
         $pago->Importe = $importeFormateado;
-        $pago->Texto = $validados['Texto'];
+
+        // Verifica si la casilla de verificación Compensado está marcada
+        if (isset($validados['Compensado'])) {
+            $pago->Compensado = 1;
+            $pago->Texto = 'Compensado';
+        } else {
+            $pago->Compensado = 0;
+            $pago->Texto = $validados['Texto'];
+        }
 
         $pago->save();
 
-        // Buscar el Tercero asociado al pago
-        $tercero = Tercero::where('RD', $validados['IdRd'])->first();
 
         // Calcula el Total de la tabla terceros
-        $totalPagos = Pago::where('IdRd', $validados['IdRd'])->sum('Importe');
         $Total = $tercero->Importe - $totalPagos;
 
         if ($Total == 0) {
@@ -123,12 +144,17 @@ class PagosController extends Controller
         $importeFormateado = $validados['Importe'] ? str_replace(['.', ',', '€'], ['', '.', ''], $validados['Importe']) : null;
         $importeFormateado = $importeFormateado ? preg_replace('/[^\d.]/', '', $importeFormateado) : null;
 
+        // Verifica si la casilla de verificación Compensado está marcada
+        $compensado = isset($validados['Compensado']) ? 1 : 0;
+        $texto = $compensado ? 'Compensado' : $validados['Texto'];
+
         DB::table('pagos')
         ->where('id', $id)
         ->update([
             'Fecha' => date('Y-m-d', strtotime($validados['Fecha'])),
             'Importe' => $importeFormateado,
-            'Texto' => $validados['Texto'],
+            'Compensado' => $compensado,
+            'Texto' => $texto,
         ]);
 
         // Buscar el Tercero asociado al pago

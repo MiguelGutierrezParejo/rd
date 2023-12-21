@@ -15,7 +15,7 @@ class Pago extends Model
         'Fecha' => 'date:d-m-Y',
     ];
 
-    protected $fillable = ['IdRd', 'Fecha', 'Importe', 'Texto'];
+    protected $fillable = ['IdRd', 'Fecha', 'Importe', 'Compensado', 'Texto'];
 
     public function tercero()
     {

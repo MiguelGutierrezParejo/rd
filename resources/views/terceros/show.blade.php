@@ -120,7 +120,7 @@
                 <span class="font-thin"> {{ $tercero->Motivo }}</span>
             </h3>
         @endif
-        <h3 class="border-t mb-2 pt-3 font-semibold">Observaciones:
+        <h3 class="border-t mb-2 pt-3 font-semibold">Concepto:
             <span class="font-thin"> {{ $tercero->Texto }}</span>
         </h3>
     </div>
@@ -144,7 +144,7 @@
                 </tr>
             </thead>
             @php
-                $pagos = DB::select("SELECT pagos.Id, pagos.Fecha, pagos.Importe, pagos.Texto FROM pagos WHERE pagos.IdRd = $tercero->RD ORDER BY pagos.Fecha");
+                $pagos = DB::select("SELECT pagos.Id, pagos.Fecha, pagos.Importe, pagos.Texto FROM pagos WHERE pagos.IdRd = $tercero->RD ORDER BY pagos.Fecha DESC");
             @endphp
             <tbody>
                 @foreach ($pagos as $pago)

@@ -5,19 +5,28 @@
 
         <h1 class="mb-4 text-2xl font-semibold">Editar pago</h1>
 
-        <div class="mb-6">
-            <label for="Importe"
-                class="text-sm font-medium text-gray-900 block mb-2 @error('Importe') text-red-500 @enderror">
-                Importe
-            </label>
-            <input type="text" name="Importe" id="Importe"
-                class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-300 p-2.5 @error('Importe') border-red-500 @enderror"
-                value="{{ old('Importe', $pago->Importe) }}">
-            @error('Modelo')
-                <p class="text-red-500 text-sm mt-1">
-                    {{ $message }}
-                </p>
-            @enderror
+        <div class="flex">
+            <div class="mb-6">
+                <label for="Importe"
+                    class="text-sm font-medium text-gray-900 block mb-2 @error('Importe') text-red-500 @enderror">
+                    Importe
+                </label>
+                <input type="text" name="Importe" id="Importe"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-300 p-2.5 @error('Importe') border-red-500 @enderror"
+                    value="{{ old('Importe', $pago->Importe) }}">
+                @error('Importe')
+                    <p class="text-red-500 text-sm mt-1">
+                        {{ $message }}
+                    </p>
+                @enderror
+            </div>
+            <div style="margin-left: 5%">
+                <label for="Compensado"
+                    class="text-sm font-medium text-gray-900 block mb-2 @error('Compensado') text-red-500 @enderror">
+                    Compensado
+                </label>
+                <input type="checkbox" name="Compensado" id="Compensado" {{ old('Compensado', $pago->Compensado) == 1 ? 'checked' : '' }}>
+            </div>
         </div>
         <div class="mb-6">
             <label for="Fecha"
