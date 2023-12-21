@@ -95,11 +95,9 @@ class PagosController extends Controller
         // Buscar el Tercero asociado al pago
         $tercero = Tercero::where('RD', $validados['IdRd'])->first();
 
-        // Actualizar el campo Total en la tabla de terceros
+        // Calcula el Total de la tabla terceros
         $totalPagos = Pago::where('IdRd', $validados['IdRd'])->sum('Importe');
         $Total = $tercero->Importe - $totalPagos;
-
-        Tercero::where('RD', $validados['IdRd'])->update(['Total' => $Total]);
 
         if ($Total == 0) {
             Tercero::where('RD', $validados['IdRd'])->update(['FechaPagado' => $pago->Fecha, 'Estado' => 'Pagado']);
@@ -136,11 +134,9 @@ class PagosController extends Controller
         // Buscar el Tercero asociado al pago
         $tercero = Tercero::where('RD', $pago->IdRd)->first();
 
-        // Actualizar el campo Total en la tabla de terceros
+        // Calcula el Total de la tabla terceros
         $totalPagos = Pago::where('IdRd', $tercero->RD)->sum('Importe');
         $Total = $tercero->Importe - $totalPagos;
-
-        Tercero::where('RD', $pago->IdRd)->update(['Total' => $Total]);
 
         if ($Total == 0) {
             Tercero::where('RD', $pago->IdRd)->update(['FechaPagado' => $validados['Fecha'], 'Estado' => 'Pagado']);
@@ -168,16 +164,10 @@ class PagosController extends Controller
             ->selectRaw('Importe - COALESCE((SELECT SUM(Importe) FROM pagos WHERE IdRd = ?), 0) AS nuevoTotal', [$terceroRD])
             ->value('nuevoTotal');
 
-        // Actualizar el total en la tabla terceros
-        DB::table('terceros')
-            ->where('RD', $terceroRD)
-            ->update(['Total' => $nuevoTotal]);
-
         if ($nuevoTotal == 0) {
             Tercero::where('RD', $terceroRD)->update(['FechaPagado' => new DateTime(), 'Estado' => 'Pagado']);
         } else {
             Tercero::where('RD', $terceroRD)->update(['FechaPagado' => null, 'Estado' => 'Pendiente']);
-
         }
 
         return redirect('terceros/' . $tercero->Id)->with('success', 'Pago borrado correctamente');

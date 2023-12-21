@@ -68,7 +68,6 @@ class TercerosController extends Controller
             'Texto' => 'nullable|max:200',
             'RD' => 'nullable',
             'Estado' => 'nullable|max:50',
-            'Total' => 'nullable',
             'FechaPagado' => 'nullable|date_format:Y-m-d',
             'FechaEjecutiva' => 'nullable|date_format:Y-m-d',
             'Motivo' => 'nullable',
@@ -135,7 +134,8 @@ class TercerosController extends Controller
         $tercero = Tercero::findOrFail($id);
 
         $importeFormateado = $validados['Importe'] ? str_replace(['.', ',', '€'], ['', '.', ''], $validados['Importe']) : null;
-    $importeFormateado = $importeFormateado ? preg_replace('/[^\d.]/', '', $importeFormateado) : null;
+        $importeFormateado = $importeFormateado ? preg_replace('/[^\d.]/', '', $importeFormateado) : null;
+
         DB::table('terceros')
         ->where('id', $id)
         ->update([
@@ -146,12 +146,6 @@ class TercerosController extends Controller
             'Fecha' => date('Y-m-d', strtotime($validados['Fecha'])),
             'Texto' => $validados['Texto'],
         ]);
-
-        // Recalcula el campo Total de la misma manera que al actualizar pagos
-        $totalPagos = DB::table('pagos')->where('IdRd', $validados['RD'])->sum('Importe');
-        $nuevoTotal = $importeFormateado - $totalPagos;
-
-        Tercero::where('id', $id)->update(['Total' => $nuevoTotal]);
 
         return redirect('terceros/'. $tercero->Id)->with('success', 'Registro editado con éxito.');
     }

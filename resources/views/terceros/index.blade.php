@@ -1,6 +1,5 @@
 <x-layout>
     <div class="flex flex-col text-center mt-4">
-        <h1 class="mb-4 text-2xl font-semibold">RD</h1>
         <div>
             <div class="p-2 text-right">
                 <a href="/rd/public/terceros" style="background-color: #0053D0"
@@ -163,7 +162,7 @@
                             </td>
                             <td class="border border-slate-300 px-6 py-4" align="center">
                                 <div class="text-sm text-gray-900" style="color: {{estadoColor($tercero->Estado)}}">
-                                    {{$tercero->Estado}}
+                                    <strong>{{$tercero->Estado}}</strong>
                                 </div>
                             </td>
                             <td class="border border-slate-300 px-6 py-4" align="right">
