@@ -54,14 +54,14 @@
                     <tbody>
                         @foreach ($terceros as $tercero)
                             <tr class="border border-slate-400">
-                                <td class="border border-slate-300 px-2 ">{{ $tercero->RD }}</td>
-                                <td class="border border-slate-300 px-2 ">{{ $tercero->Nombre }}</td>
-                                <td class="border border-slate-300 px-2 ">{{ $tercero->DNI }}</td>
-                                <td class="border border-slate-300 px-2 ">{{ $tercero->Expediente }}</td>
-                                <td class="border border-slate-300 px-2 ">{{ $tercero->Importe }}</td>
-                                <td class="border border-slate-300 px-2 ">{{ $tercero->Compensado }}</td>
-                                <td class="border border-slate-300 px-2 ">{{ $tercero->Importe }}</td>
-                                <td class="border border-slate-300 px-2 ">{{ $tercero->Importe }}</td>
+                                <td class="border border-slate-300 px-2">{{ $tercero->RD }}</td>
+                                <td class="border border-slate-300 px-2">{{ $tercero->Nombre }}</td>
+                                <td class="border border-slate-300 px-2">{{ $tercero->DNI }}</td>
+                                <td class="border border-slate-300 px-2">{{ $tercero->Expediente }}</td>
+                                <td class="border border-slate-300 px-2" align="right">{{ number_format($tercero->Importe, 2, ',', '.') }}€</td>
+                                <td class="border border-slate-300 px-2" align="right">{{ number_format($tercero->sumaCompensados, 2, ',', '.') }}€</td>
+                                <td class="border border-slate-300 px-2" align="right">{{ number_format($tercero->sumaNoCompensados, 2, ',', '.')}}€</td>
+                                <td class="border border-slate-300 px-2" align="right">{{ number_format($tercero->diferencia, 2, ',', '.')}}€</td>
                             </tr>
                         @endforeach
                     </tbody>

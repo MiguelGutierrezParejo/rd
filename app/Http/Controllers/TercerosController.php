@@ -61,36 +61,56 @@ class TercerosController extends Controller
 
     public function recabar()
     {
-       return view('terceros.recabar');
+        return view('terceros.recabar');
     }
 
     public function generar(Request $request)
     {
-        if($request->Hasta == null) {
+        if ($request->Hasta == null) {
             $request->Hasta = Carbon::now();
         }
 
-        if($request->Desde == null) {
+        if ($request->Desde == null) {
             $request->Desde = '0000-00-00';
         }
 
-        if ($request->Tipo != 'Todos'){
-
-            $terceros = Tercero::select('terceros.Nombre', 'terceros.RD', 'terceros.DNI', 'terceros.Importe', 'terceros.Expediente', 'pagos.Importe', 'pagos.Fecha', 'pagos.Compensado')
+        if ($request->Tipo != 'Todos') {
+            $terceros = Tercero::select(
+                'terceros.Nombre',
+                'terceros.RD',
+                'terceros.DNI',
+                'terceros.Importe',
+                'terceros.Expediente',
+                DB::raw('SUM(CASE WHEN pagos.Compensado = 1 OR pagos.Texto = "Compensado" THEN pagos.Importe ELSE 0 END) as sumaCompensados'),
+                DB::raw('SUM(CASE WHEN pagos.Compensado = 0 THEN pagos.Importe ELSE 0 END) as sumaNoCompensados'),
+                DB::raw('terceros.Importe - SUM(pagos.Importe) as diferencia')
+            )
                 ->leftJoin('pagos', 'terceros.RD', '=', 'pagos.IdRd')
                 ->where('pagos.Fecha', '>=', $request->Desde)
                 ->where('pagos.Fecha', '<=', $request->Hasta)
                 ->where('Estado', $request->Estado)
-                ->orderBy('pagos.Fecha')
+                ->groupBy('terceros.Nombre', 'terceros.RD', 'terceros.DNI', 'terceros.Importe', 'terceros.Expediente', DB::raw('YEAR(pagos.Fecha)')) // Agrupa por el campo que identifica a cada persona
+                ->orderBy(DB::raw('MAX(pagos.Fecha)'))
                 ->get();
-        } else {
 
-            $tercerostodos = Tercero::select('terceros.Nombre', 'terceros.RD', 'terceros.DNI', 'terceros.Importe', 'terceros.Expediente', 'pagos.Importe', 'pagos.Fecha', 'pagos.Compensado')
-            ->leftJoin('pagos', 'terceros.RD', '=', 'pagos.IdRd')
-            ->where('pagos.Fecha', '>=', $request->Desde)
-            ->where('pagos.Fecha', '<=', $request->Hasta)
-            ->where('Estado', '!=', 'Anulado')
-            ->get();
+        } else {
+            /*
+            $tercerostodos = Tercero::select(
+                'terceros.Nombre',
+                'terceros.RD',
+                'terceros.DNI',
+                'terceros.Importe',
+                'terceros.Expediente',
+                DB::raw('SUM(CASE WHEN pagos.Compensado = 1 THEN pagos.Importe ELSE 0 END) as sumaCompensados'),
+                DB::raw('SUM(CASE WHEN pagos.Compensado = 0 THEN pagos.Importe ELSE 0 END) as sumaNoCompensados')
+            )
+                ->leftJoin('pagos', 'terceros.RD', '=', 'pagos.IdRd')
+                ->where('pagos.Fecha', '>=', $request->Desde)
+                ->where('pagos.Fecha', '<=', $request->Hasta)
+                ->where('Estado', '!=', 'Anulado')
+                ->groupBy('terceros.RD') // Agrupa por el campo que identifica a cada persona
+                ->get();
+                */
         }
 
         $pdf = Pdf::loadView('terceros.generar', [
@@ -100,6 +120,7 @@ class TercerosController extends Controller
         ])->setPaper('a4', 'landscape');
         return $pdf->stream();
     }
+
 
     private function validar()
     {
@@ -181,17 +202,17 @@ class TercerosController extends Controller
         $importeFormateado = $importeFormateado ? preg_replace('/[^\d.]/', '', $importeFormateado) : null;
 
         DB::table('terceros')
-        ->where('id', $id)
-        ->update([
-            'Nombre' => $validados['Nombre'],
-            'DNI' => $validados['DNI'],
-            'Expediente' => $validados['Expediente'],
-            'Importe' => $importeFormateado,
-            'Fecha' => date('Y-m-d', strtotime($validados['Fecha'])),
-            'Texto' => $validados['Texto'],
-        ]);
+            ->where('id', $id)
+            ->update([
+                'Nombre' => $validados['Nombre'],
+                'DNI' => $validados['DNI'],
+                'Expediente' => $validados['Expediente'],
+                'Importe' => $importeFormateado,
+                'Fecha' => date('Y-m-d', strtotime($validados['Fecha'])),
+                'Texto' => $validados['Texto'],
+            ]);
 
-        return redirect('terceros/'. $tercero->Id)->with('success', 'Registro editado con éxito.');
+        return redirect('terceros/' . $tercero->Id)->with('success', 'Registro editado con éxito.');
     }
 
     public function fechaanular($id)
@@ -208,7 +229,7 @@ class TercerosController extends Controller
         $tercero = Tercero::findOrFail($id);
         $validados = $this->validar();
 
-         // Obtener el usuario autenticado
+        // Obtener el usuario autenticado
         $usuarioAutenticado = auth()->user();
 
         // Verificar la contraseña
@@ -217,12 +238,12 @@ class TercerosController extends Controller
         }
 
         DB::table('terceros')
-        ->where('id', $id)
-        ->update([
-            'FechaAnulacion' => $validados['FechaAnulacion'],
-            'Motivo' => $validados['Motivo'],
-            'Estado' => 'Anulado',
-        ]);
+            ->where('id', $id)
+            ->update([
+                'FechaAnulacion' => $validados['FechaAnulacion'],
+                'Motivo' => $validados['Motivo'],
+                'Estado' => 'Anulado',
+            ]);
 
         return redirect('terceros/' . $tercero->Id)->with('success', 'Fecha de anulación añadida correctamente');
     }
@@ -232,11 +253,11 @@ class TercerosController extends Controller
         $tercero = Tercero::findOrFail($id);
 
         DB::table('terceros')
-        ->where('id', $id)
-        ->update([
-            'FechaAnulacion' => null,
-            'Estado' => 'Pendiente',
-        ]);
+            ->where('id', $id)
+            ->update([
+                'FechaAnulacion' => null,
+                'Estado' => 'Pendiente',
+            ]);
 
         return redirect('terceros/' . $tercero->Id)->with('success', 'Registro dado de alta correctamente');
     }
@@ -256,12 +277,12 @@ class TercerosController extends Controller
         $validados = $this->validar();
 
         DB::table('terceros')
-        ->where('id', $id)
-        ->update([
-            'FechaEjecutiva' => $validados['FechaEjecutiva'],
-            'Motivo' => $validados['Motivo'],
-            'Estado' => 'Ejecutiva',
-        ]);
+            ->where('id', $id)
+            ->update([
+                'FechaEjecutiva' => $validados['FechaEjecutiva'],
+                'Motivo' => $validados['Motivo'],
+                'Estado' => 'Ejecutiva',
+            ]);
 
         return redirect('terceros/' . $tercero->Id)->with('success', 'Fecha de ejecutiva añadida correctamente');
     }
@@ -271,11 +292,11 @@ class TercerosController extends Controller
         $tercero = Tercero::findOrFail($id);
 
         DB::table('terceros')
-        ->where('id', $id)
-        ->update([
-            'FechaEjecutiva' => null,
-            'Estado' => 'Pendiente',
-        ]);
+            ->where('id', $id)
+            ->update([
+                'FechaEjecutiva' => null,
+                'Estado' => 'Pendiente',
+            ]);
 
         return redirect('terceros/' . $tercero->Id)->with('success', 'Registro modificado correctamente');
     }

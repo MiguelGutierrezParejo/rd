@@ -6,7 +6,7 @@
                     class="text-white font-semibold rounded-lg text-sm px-5 py-1 text-center">Limpiar filtro
                 </a>
                 &nbsp; | &nbsp;
-                <a href="{{ route("pagos.recabar") }}" style="background-color: #0053D0"
+                <a href="{{ route('pagos.recabar') }}" style="background-color: #0053D0"
                     class="text-white font-semibold rounded-lg text-sm px-5 py-1 text-center">Listados
                 </a>
                 &nbsp; | &nbsp;
@@ -18,7 +18,7 @@
                 <thead class="bg-gray-100">
                     @php
                         $link = e('Nombre=' . request('Nombre') . '&DNI=' . request('DNI') . '&Expediente=' . request('Expediente') . '&Estado=' . request('Estado') . '&Importe=' . request('Importe') . '&RD=' . request('RD'));
-                        $enlace = e('/rd/public/terceros')
+                        $enlace = e('/rd/public/terceros');
                     @endphp
 
                     <tr>
@@ -103,7 +103,7 @@
                             <input type="hidden" name="dir" value="{{ old('dir') }}">
                             <td class="border border-slate-300 px-6 py-2 font-semibold">
                                 <input type="text" class="border border-slate-300" style="width: 350px"
-                                name="Nombre" id="Nombre" value="{{ request()->query('Nombre') }}">
+                                    name="Nombre" id="Nombre" value="{{ request()->query('Nombre') }}">
                             </td>
                             <td class="border border-slate-300 px-6 py-2 font-semibold">
                                 <input type="text" class="border border-slate-300 px-6 py-2" style="width: 150px"
@@ -111,72 +111,78 @@
                             </td>
                             <td class="border border-slate-300 px-6 py-2 font-semibold">
                                 <input type="text" class="border border-slate-300" style="width: 150px"
-                                name="DNI" id="DNI" value="{{ request()->query('DNI') }}">
+                                    name="DNI" id="DNI" value="{{ request()->query('DNI') }}">
                             </td>
                             <td class="border border-slate-300 px-6 py-2 font-semibold">
                                 <input type="text" class="border border-slate-300 px-6 py-2" style="width: 150px"
-                                name="Expediente" id="Expediente" value="{{ request()->query('Expediente') }}">
+                                    name="Expediente" id="Expediente" value="{{ request()->query('Expediente') }}">
                             </td>
                             <td class="border border-slate-300 px-6 py-2 font-semibold">
                                 <input type="text" class="border border-slate-300 px-6 py-2" style="width: 150px"
-                                name="Estado" id="Estado" value="{{ request()->query('Estado') }}">
+                                    name="Estado" id="Estado" value="{{ request()->query('Estado') }}">
                             </td>
                             <td class="border border-slate-300 px-6 py-2 font-semibold">
                                 <input type="text" class="border border-slate-300 px-6 py-2" style="width: 150px"
-                                name="Importe" id="Importe" value="{{ request()->query('Importe') }}">
+                                    name="Importe" id="Importe" value="{{ request()->query('Importe') }}">
                             </td>
                             <div class="hidden"><button type="submit"></button></div>
                         </form>
                     </tr>
                     @php
-                function estadoColor($estado) {
-                    switch ($estado) {
-                        case 'Anulado':
-                            return '#b91c1c'; // Clase para el color rojo
-                        case 'Pagado':
-                            return '#15803d'; // Clase para el color verde
-                        case 'Ejecutiva':
-                            return '#0057da'; // Clase para el color azul
-                    }
-                }
-            @endphp
+                        function estadoColor($estado)
+                        {
+                            switch ($estado) {
+                                case 'Anulado':
+                                    return '#b91c1c'; // Clase para el color rojo
+                                case 'Pagado':
+                                    return '#15803d'; // Clase para el color verde
+                                case 'Ejecutiva':
+                                    return '#0057da'; // Clase para el color azul
+                            }
+                        }
+                    @endphp
                     @foreach ($terceros as $tercero)
-
                         <tr class="border border-slate-400">
                             <td class="border border-slate-300 px-6 py-4">
                                 <div class="text-sm text-gray-900">
-                                   <a href="{{ route('terceros.show', ['id' => $tercero->Id]) }}">{{$tercero->Nombre}}</a>
+                                    <a
+                                        href="{{ route('terceros.show', ['id' => $tercero->Id]) }}">{{ $tercero->Nombre }}</a>
                                 </div>
                             </td>
                             <td class="border border-slate-300 px-6 py-4" style="width: 150px" align="center">
                                 <div class="text-sm text-gray-900" style="width: 150px">
-                                    <a href="{{ route('terceros.show', ['id' => $tercero->Id]) }}">{{$tercero->RD}}</a>
+                                    <a
+                                        href="{{ route('terceros.show', ['id' => $tercero->Id]) }}">{{ $tercero->RD }}</a>
                                 </div>
                             </td>
                             <td class="border border-slate-300 px-6 py-4" align="center">
                                 <div class="text-sm text-gray-900">
-                                    <a href="{{ route('terceros.show', ['id' => $tercero->Id]) }}">{{$tercero->DNI}}</a>
+                                    <a
+                                        href="{{ route('terceros.show', ['id' => $tercero->Id]) }}">{{ $tercero->DNI }}</a>
                                 </div>
                             </td>
                             <td class="border border-slate-300 px-6 py-4" align="center">
                                 <div class="text-sm text-gray-900">
-                                    <a href="{{ route('terceros.show', ['id' => $tercero->Id]) }}">{{$tercero->Expediente}}</a>
+                                    <a
+                                        href="{{ route('terceros.show', ['id' => $tercero->Id]) }}">{{ $tercero->Expediente }}</a>
                                 </div>
                             </td>
                             <td class="border border-slate-300 px-6 py-4" align="center">
-                                <div class="text-sm text-gray-900" style="color: {{estadoColor($tercero->Estado)}}">
+                                <div class="text-sm text-gray-900"
+                                    style="color: {{ estadoColor($tercero->Estado) }}">
                                     <a href="{{ route('terceros.show', ['id' => $tercero->Id]) }}">
                                         @if ($tercero->Estado != 'Pendiente')
-                                            <strong>{{$tercero->Estado}}</strong>
+                                            <strong>{{ $tercero->Estado }}</strong>
                                         @else
-                                            {{$tercero->Estado}}
+                                            {{ $tercero->Estado }}
                                         @endif
                                     </a>
                                 </div>
                             </td>
                             <td class="border border-slate-300 px-6 py-4" align="right">
                                 <div class="text-sm text-gray-900">
-                                    <a href="{{ route('terceros.show', ['id' => $tercero->Id]) }}">{{ number_format($tercero->Importe, 2, ',', '.') }}€</a>
+                                    <a
+                                        href="{{ route('terceros.show', ['id' => $tercero->Id]) }}">{{ number_format($tercero->Importe, 2, ',', '.') }}€</a>
                                 </div>
                             </td>
                         </tr>
@@ -190,6 +196,6 @@
             <ul class="pagination">
                 {{ $terceros->appends(request()->query())->links() }}
             </ul>
-          </nav>
+        </nav>
     </div>
 </x-layout>
