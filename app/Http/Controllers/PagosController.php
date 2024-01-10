@@ -88,6 +88,14 @@ class PagosController extends Controller
 
         $pago->save();
 
+        /* Para modificar el total pendiente en la tabla
+        $totalPagos2 = DB::table('pagos')
+            ->where('IdRd', $tercero->RD)
+            ->sum('Importe');
+
+        $total = $tercero->Importe - $totalPagos2;
+        Tercero::where('RD', $validados['IdRd'])->update(['Total' => $total]);
+        */
 
         // Calcula el Total de la tabla terceros después de agregar el nuevo pago
         $totalPagosDespues = Pago::where('IdRd', $validados['IdRd'])->sum('Importe');
