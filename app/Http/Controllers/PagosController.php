@@ -35,12 +35,17 @@ class PagosController extends Controller
     public function create($IdRd)
     {
         $pago = new Pago();
-        $tercero = DB::select("SELECT terceros.RD, terceros.Id FROM terceros WHERE terceros.RD = $IdRd");
+        $tercero = DB::select("SELECT terceros.RD, terceros.Id, terceros.Importe FROM terceros WHERE terceros.RD = $IdRd");
+
+        // Obtener el total pagado hasta ahora
+        $totalPagado = Pago::where('IdRd', $IdRd)->sum('Importe');
+        $totalPendiente = floatval($tercero[0]->Importe) - $totalPagado;
 
         return view('pagos.create', [
             'pago' => $pago,
             'RD' => $tercero[0]->RD,
-            'terceroId' => $tercero[0]->Id
+            'terceroId' => $tercero[0]->Id,
+            'totalPendiente' => $totalPendiente,
         ]);
     }
 

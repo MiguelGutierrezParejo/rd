@@ -154,10 +154,16 @@
                                 {{ date('d-m-Y', strtotime($pago->Fecha)) }}
                             </a>
                         </td>
-
-                        <td class="px-2 border border-black" align="right">{{ number_format($pago->Importe, 2, ',', '.') }}€</td>
-
-                        <td class="px-2 border border-black">{{$pago->Texto}}</td>
+                        <td class="px-2 border border-black" align="right">
+                            <a href="{{ route('pagos.show', ['id' => $pago->Id]) }}">
+                                {{ number_format($pago->Importe, 2, ',', '.') }}€
+                            </a>
+                        </td>
+                        <td class="px-2 border border-black">
+                            <a href="{{ route('pagos.show', ['id' => $pago->Id]) }}">
+                                {{ $pago->Texto }}
+                            </a>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
