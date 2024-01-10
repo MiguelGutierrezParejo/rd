@@ -10,16 +10,17 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="{{ asset('js/otro.js') }}"></script>
     <link href="/rd/public/logoinformaticac.png" rel="icon" type="image/png">
-    <link  href="{{ asset('css/lightbox.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/lightbox.min.css') }}" rel="stylesheet">
     <script src="{{ asset('js/lightbox.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/autonumeric@4.8.1"></script>
     <title>RD</title>
 </head>
 
-<body class="antialiased"  style="background-color: pink">
+<body class="antialiased" style="background-color: pink">
     <div class="container px-4 mx-auto">
         <header class="bg-gray-100 rounded py-4 px-4 mt-5 flex flex-row justify-between items-center">
-        <a style="width:17%;" class="pr-1 font-semibold" href="/rd/public/terceros"><img src="/rd/public/Gmu_trans_Horizontal.png" alt="GMU-Logo"></a>
+            <a style="width:17%;" class="pr-1 font-semibold" href="/rd/public/terceros"><img
+                    src="/rd/public/Gmu_trans_Horizontal.png" alt="GMU-Logo"></a>
 
             <b class="text-gi">Gestión de RD</b>
 
@@ -35,12 +36,16 @@
                     <div class="group inline-block">
                         <x-dropdown align="right" width="48">
                             <x-slot name="trigger">
-                                <button class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
+                                <button
+                                    class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
                                     <div>{{ Auth::user()->name }}</div>
 
                                     <div class="ml-1">
-                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                clip-rule="evenodd" />
                                         </svg>
                                     </div>
                                 </button>
@@ -52,10 +57,17 @@
                                     @csrf
 
                                     <x-dropdown-link :href="route('logout')"
-                                            onclick="event.preventDefault();
+                                        onclick="event.preventDefault();
                                                         this.closest('form').submit();">
                                         {{ __('Cerrar sesión') }}
                                     </x-dropdown-link>
+
+                                    {{-- Verificar el correo electrónico antes de mostrar la opción de registro --}}
+                                    @if (Auth::user()->email == 'jmmonge@gmusanlucar.es')
+                                        <x-dropdown-link :href="route('logout-and-register')">
+                                            {{ __('Registrarse') }}
+                                        </x-dropdown-link>
+                                    @endif
                                 </form>
                             </x-slot>
                         </x-dropdown>
@@ -65,15 +77,15 @@
         </header>
 
         @if (session()->has('error'))
-        <div class="bg-red-100 rounded-lg p-4 mt-4 mb-4 text-sm text-red-700" role="alert">
-            <span class="font-semibold">Error:</span> {{ session('error') }}
-        </div>
+            <div class="bg-red-100 rounded-lg p-4 mt-4 mb-4 text-sm text-red-700" role="alert">
+                <span class="font-semibold">Error:</span> {{ session('error') }}
+            </div>
         @endif
 
         @if (session()->has('success'))
-        <div class="bg-green-100 rounded-lg p-4 mt-4 mb-4 text-sm text-green-700" role="alert">
-            {{ session('success') }}
-        </div>
+            <div class="bg-green-100 rounded-lg p-4 mt-4 mb-4 text-sm text-green-700" role="alert">
+                {{ session('success') }}
+            </div>
         @endif
 
         <div class="mt-4 mb-4">
@@ -102,4 +114,5 @@
         });
     </script>
 </body>
+
 </html>

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PagosController;
 use App\Http\Controllers\TercerosController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -60,7 +61,7 @@ Route::put('/terceros/reactivar/{id}', [TercerosController::class, 'reactivar'])
 
 Route::get('/pagos/recabar', [PagosController::class, 'recabar'])
     ->name('pagos.recabar');
-    
+
 Route::post('/terceros/generar', [TercerosController::class, 'generar'])
     ->name('terceros.generar');
 
@@ -82,6 +83,13 @@ Route::put('/pagos/{id}', [PagosController::class, 'update'])
     ->name('pagos.update');
 
 Route::delete('/pagos/delete/{id}', [PagosController::class, 'destroy']);
+
+
+Route::get('/logout-and-register', function () {
+    Auth::logout();
+    return redirect()->route('register');
+})->name('logout-and-register');
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
