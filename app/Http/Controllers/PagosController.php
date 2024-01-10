@@ -89,8 +89,11 @@ class PagosController extends Controller
         $pago->save();
 
 
-        // Calcula el Total de la tabla terceros
-        $Total = $tercero->Importe - $totalPagos;
+        // Calcula el Total de la tabla terceros después de agregar el nuevo pago
+        $totalPagosDespues = Pago::where('IdRd', $validados['IdRd'])->sum('Importe');
+
+        // Actualiza el campo FechaPagado y Estado si el Total es 0
+        $Total = $tercero->Importe - $totalPagosDespues;
 
         if ($Total == 0) {
             Tercero::where('RD', $validados['IdRd'])->update(['FechaPagado' => $pago->Fecha, 'Estado' => 'Pagado']);
