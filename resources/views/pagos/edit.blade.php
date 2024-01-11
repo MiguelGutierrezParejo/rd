@@ -51,7 +51,7 @@
             <input type="text" name="Texto" id="Texto"
                 class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 @error('Texto') border-red-500 @enderror"
                 value="{{ old('Texto', $pago->Texto) }}"
-                {{ old('Compensado', $pago->Compensado) == 1 ? 'readonly' : '' }}>
+                data-original-value="{{ old('Texto', $pago->Texto) }}">
             @error('Texto')
                 <p class="text-red-500 text-sm mt-1">
                     {{ $message }}
@@ -74,7 +74,7 @@
                         textoInput.value = 'Compensado';
                     } else {
                         // Si no está marcado, limpia el campo de texto
-                        textoInput.value = '';
+                        textoInput.value = textoInput.getAttribute('data-original-value') === 'Compensado' ? '' : textoInput.getAttribute('data-original-value');
                     }
                 }
 
