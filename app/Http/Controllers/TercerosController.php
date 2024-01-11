@@ -74,7 +74,7 @@ class TercerosController extends Controller
             $request->Desde = '0000-00-00';
         }
 
-        if ($request->Tipo != 'Todos') {
+        if ($request->Estado != 'Todos') {
             $terceros = Tercero::select(
                 'terceros.Nombre',
                 'terceros.RD',
