@@ -89,33 +89,59 @@ class TercerosController extends Controller
                 ->where('terceros.Fecha', '>=', $request->Desde)
                 ->where('terceros.Fecha', '<=', $request->Hasta)
                 ->where('Estado', $request->Estado)
-                ->groupBy('terceros.Nombre', 'terceros.RD', 'terceros.DNI', 'terceros.Importe', 'terceros.Expediente','terceros.Fecha', DB::raw('YEAR(pagos.Fecha)')) // Agrupa por el campo que identifica a cada persona
-                ->orderByDesc('terceros.Fecha')
+                ->groupBy('terceros.Nombre', 'terceros.RD', 'terceros.DNI', 'terceros.Importe', 'terceros.Expediente', 'terceros.Fecha') // Agrupa por el campo que identifica a cada persona
+                ->orderBy('terceros.Fecha')
                 ->get();
 
+            // Calcular total
+            $totalesPorAnio = $terceros->groupBy(function ($tercero) {
+                return Carbon::parse($tercero->Fecha)->year;
+            })->map(function ($items, $year) {
+                return [
+                    'year' => $year,
+                    'totalImporte' => $items->sum('Importe'),
+                    'totalCompensados' => $items->sum('sumaCompensados'),
+                    'totalNoCompensados' => $items->sum('sumaNoCompensados'),
+                    'totalDiferencia' => $items->sum('diferencia'),
+                ];
+            })->values();
         } else {
-            /*
-            $tercerostodos = Tercero::select(
+            $terceros = Tercero::select(
                 'terceros.Nombre',
                 'terceros.RD',
                 'terceros.DNI',
                 'terceros.Importe',
                 'terceros.Expediente',
+                'terceros.Estado',
                 DB::raw('SUM(CASE WHEN pagos.Compensado = 1 THEN pagos.Importe ELSE 0 END) as sumaCompensados'),
-                DB::raw('SUM(CASE WHEN pagos.Compensado = 0 THEN pagos.Importe ELSE 0 END) as sumaNoCompensados')
+                DB::raw('SUM(CASE WHEN pagos.Compensado = 0 THEN pagos.Importe ELSE 0 END) as sumaNoCompensados'),
+                DB::raw('terceros.Importe - SUM(pagos.Importe) as diferencia')
             )
                 ->leftJoin('pagos', 'terceros.RD', '=', 'pagos.IdRd')
-                ->where('pagos.Fecha', '>=', $request->Desde)
-                ->where('pagos.Fecha', '<=', $request->Hasta)
+                ->where('Terceros.Fecha', '>=', $request->Desde)
+                ->where('Terceros.Fecha', '<=', $request->Hasta)
                 ->where('Estado', '!=', 'Anulado')
-                ->groupBy('terceros.RD') // Agrupa por el campo que identifica a cada persona
+                ->groupBy('terceros.Nombre', 'terceros.RD', 'terceros.DNI', 'terceros.Importe', 'terceros.Expediente', 'terceros.Estado', 'terceros.Fecha') // Agrupa por el campo que identifica a cada persona
+                ->orderBy('terceros.Fecha')
                 ->get();
-                */
+
+            // Calcular total
+            $totalesPorAnio = $terceros->groupBy(function ($tercero) {
+                return Carbon::parse($tercero->Fecha)->year;
+            })->map(function ($items, $year) {
+                return [
+                    'year' => $year,
+                    'totalImporte' => $items->sum('Importe'),
+                    'totalCompensados' => $items->sum('sumaCompensados'),
+                    'totalNoCompensados' => $items->sum('sumaNoCompensados'),
+                    'totalDiferencia' => $items->sum('diferencia'),
+                ];
+            })->values();
         }
 
         $pdf = Pdf::loadView('terceros.generar', [
             'terceros' => $terceros,
-            //'tercerostodos' => $tercerostodos,
+            'totalesPorAnio' => $totalesPorAnio,
             'request' => $request,
         ])->setPaper('a4', 'landscape');
         return $pdf->stream();
