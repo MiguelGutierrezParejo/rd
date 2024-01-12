@@ -86,11 +86,11 @@ class TercerosController extends Controller
                 DB::raw('terceros.Importe - SUM(pagos.Importe) as diferencia')
             )
                 ->leftJoin('pagos', 'terceros.RD', '=', 'pagos.IdRd')
-                ->where('pagos.Fecha', '>=', $request->Desde)
-                ->where('pagos.Fecha', '<=', $request->Hasta)
+                ->where('terceros.Fecha', '>=', $request->Desde)
+                ->where('terceros.Fecha', '<=', $request->Hasta)
                 ->where('Estado', $request->Estado)
-                ->groupBy('terceros.Nombre', 'terceros.RD', 'terceros.DNI', 'terceros.Importe', 'terceros.Expediente', DB::raw('YEAR(pagos.Fecha)')) // Agrupa por el campo que identifica a cada persona
-                ->orderBy(DB::raw('MAX(pagos.Fecha)'))
+                ->groupBy('terceros.Nombre', 'terceros.RD', 'terceros.DNI', 'terceros.Importe', 'terceros.Expediente','terceros.Fecha', DB::raw('YEAR(pagos.Fecha)')) // Agrupa por el campo que identifica a cada persona
+                ->orderByDesc('terceros.Fecha')
                 ->get();
 
         } else {
