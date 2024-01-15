@@ -76,21 +76,21 @@
                         </tr>
                     @endforeach
 
-                    {{-- Agregar filas de totales por año --}}
-                    @foreach ($totalesPorAnio as $totalAnio)
+                    {{-- Totales por año --}}
+                    @foreach ($totales as $total)
                         <tr class="border border-slate-400">
                             <td colspan="{{ $request->Estado == 'Todos' ? 5 : 4 }}"
                                 class="border border-slate-300 px-2 font-semibold">
                                 TOTAL INFORME:
                             </td>
                             <td class="border border-slate-300 px-2" align="right">
-                                {{ number_format($totalAnio['totalImporte'], 2, ',', '.') }}€</td>
+                                {{ number_format($total['totalImporte'], 2, ',', '.') }}€</td>
                             <td class="border border-slate-300 px-2" align="right">
-                                {{ number_format($totalAnio['totalCompensados'], 2, ',', '.') }}€</td>
+                                {{ number_format($total['totalCompensados'], 2, ',', '.') }}€</td>
                             <td class="border border-slate-300 px-2" align="right">
-                                {{ number_format($totalAnio['totalNoCompensados'], 2, ',', '.') }}€</td>
+                                {{ number_format($total['totalNoCompensados'], 2, ',', '.') }}€</td>
                             <td class="border border-slate-300 px-2" align="right">
-                                {{ number_format($totalAnio['totalDiferencia'], 2, ',', '.') }}€</td>
+                                {{ number_format($total['totalDiferencia'], 2, ',', '.') }}€</td>
                         </tr>
                     @endforeach
                 </tbody>
