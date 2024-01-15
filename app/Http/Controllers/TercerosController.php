@@ -81,7 +81,7 @@ class TercerosController extends Controller
                 'terceros.DNI',
                 'terceros.Importe',
                 'terceros.Expediente',
-                DB::raw('SUM(CASE WHEN pagos.Compensado = 1 OR pagos.Texto = "Compensado" THEN pagos.Importe ELSE 0 END) as sumaCompensados'),
+                DB::raw('SUM(CASE WHEN pagos.Compensado = 1 THEN pagos.Importe ELSE 0 END) as sumaCompensados'),
                 DB::raw('SUM(CASE WHEN pagos.Compensado = 0 THEN pagos.Importe ELSE 0 END) as sumaNoCompensados'),
                 DB::raw('CASE WHEN SUM(pagos.Importe) IS NULL THEN terceros.Importe ELSE terceros.Importe - SUM(pagos.Importe) END as diferencia')
             )
@@ -93,12 +93,27 @@ class TercerosController extends Controller
                 ->orderBy('terceros.Fecha')
                 ->get();
 
+            // Calcular total por año
+            $totalesAnio = Tercero::select(
+                DB::raw('YEAR(terceros.Fecha) as anioCreacion'),
+                DB::raw('SUM(terceros.Importe) as totalImporte'),
+                DB::raw('SUM(CASE WHEN pagos.Compensado = 1 THEN pagos.Importe ELSE 0 END) as totalCompensados'),
+                DB::raw('SUM(CASE WHEN pagos.Compensado = 0 THEN pagos.Importe ELSE 0 END) as totalNoCompensados'),
+                DB::raw('CASE WHEN SUM(pagos.Importe) IS NULL THEN terceros.Importe ELSE terceros.Importe - SUM(pagos.Importe) END as totalDiferencia')
+            )
+                ->leftJoin('pagos', 'terceros.RD', '=', 'pagos.IdRd')
+                ->where('terceros.Fecha', '>=', $request->Desde)
+                ->where('terceros.Fecha', '<=', $request->Hasta)
+                ->where('Estado', $request->Estado)
+                ->groupBy(DB::raw('YEAR(terceros.Fecha)'), 'terceros.Importe')
+                ->orderBy(DB::raw('YEAR(terceros.Fecha)'))
+                ->get();
+
             // Calcular total
             $totales = $terceros->groupBy(function ($tercero) {
                 return Carbon::parse($tercero->Fecha)->year;
-            })->map(function ($items, $year) {
+            })->map(function ($items) {
                 return [
-                    'year' => $year,
                     'totalImporte' => $items->sum('Importe'),
                     'totalCompensados' => $items->sum('sumaCompensados'),
                     'totalNoCompensados' => $items->sum('sumaNoCompensados'),
@@ -125,12 +140,26 @@ class TercerosController extends Controller
                 ->orderBy('terceros.Fecha')
                 ->get();
 
+            // Calcular total por año
+            $totalesAnio = Tercero::select(
+                DB::raw('YEAR(terceros.Fecha) as anioCreacion'),
+                DB::raw('SUM(terceros.Importe) as totalImporte'),
+                DB::raw('SUM(CASE WHEN pagos.Compensado = 1 THEN pagos.Importe ELSE 0 END) as totalCompensados'),
+                DB::raw('SUM(CASE WHEN pagos.Compensado = 0 THEN pagos.Importe ELSE 0 END) as totalNoCompensados'),
+                DB::raw('SUM(terceros.Importe) - SUM(CASE WHEN pagos.Compensado = 1 THEN pagos.Importe ELSE 0 END) as totalDiferencia')
+            )
+                ->leftJoin('pagos', 'terceros.RD', '=', 'pagos.IdRd')
+                ->where('terceros.Fecha', '>=', $request->Desde)
+                ->where('terceros.Fecha', '<=', $request->Hasta)
+                ->where('Estado', $request->Estado)
+                ->groupBy(DB::raw('YEAR(terceros.Fecha)'))
+                ->get();
+
             // Calcular total
             $totales = $terceros->groupBy(function ($tercero) {
                 return Carbon::parse($tercero->Fecha)->year;
-            })->map(function ($items, $year) {
+            })->map(function ($items) {
                 return [
-                    'year' => $year,
                     'totalImporte' => $items->sum('Importe'),
                     'totalCompensados' => $items->sum('sumaCompensados'),
                     'totalNoCompensados' => $items->sum('sumaNoCompensados'),
@@ -142,11 +171,11 @@ class TercerosController extends Controller
         $pdf = Pdf::loadView('terceros.generar', [
             'terceros' => $terceros,
             'totales' => $totales,
+            'totalesAnio' => $totalesAnio,
             'request' => $request,
         ])->setPaper('a4', 'landscape');
         return $pdf->stream();
     }
-
 
     private function validar()
     {
@@ -208,7 +237,6 @@ class TercerosController extends Controller
 
         return redirect('/terceros')->with('success', 'Registro creado con éxito.');
     }
-
 
     public function edit($id)
     {
