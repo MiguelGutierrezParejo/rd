@@ -108,6 +108,7 @@ class TercerosController extends Controller
                 ->groupBy(DB::raw('YEAR(terceros.Fecha)'), 'terceros.Importe')
                 ->orderBy(DB::raw('YEAR(terceros.Fecha)'))
                 ->get();
+                
 
             // Calcular total
             $totales = $terceros->groupBy(function ($tercero) {
